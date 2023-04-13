@@ -1,0 +1,11 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "sinatra",
+      "type": "Ruby",
+      "request": "launch",
+      "program": "/Users/kyleswaffield/sei/cloud_template/bin/server.rb"
+    }
+  ]
+}

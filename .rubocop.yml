@@ -1,0 +1,10 @@
+require:
+ - rubocop-rake
+ - rubocop-rspec
+
+AllCops:
+  SuggestExtensions: false
+  NewCops: enable
+
+Metrics/MethodLength:
+  Enabled: false
