@@ -61,7 +61,7 @@ end
 #   "path": "/categories",
 #   "httpMethod": "GET",
 #   "headers": {
-#     "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzYzdlZjc2M2U0YzJhZjU0NmE2ZjI5NCIsImZpcnN0TmFtZSI6IkJlcm5hZGluZSIsImxhc3ROYW1lIjoiU3dhZmZpZWxkIiwidXNlcm5hbWUiOiJiZXJuYWRpbmUuc3dhZmZpZWxkIiwicGFzc3dvcmQiOiIkMmEkMTAkOFlXYkFRaEFlbmJtbHN1dk01bUk1dW5rZ0NXZHovSGFvamlROWM5eUlCSTFIUzNnN1guRUsiLCJlbWFpbCI6ImJlcm5Ac3dhZmYuY28uemEiLCJjcmVhdGVkQXQiOiIyMDIzLTAxLTE4VDEzOjA5OjEwLjg3OFoiLCJ1cGRhdGVkQXQiOiIyMDIzLTAxLTE4VDEzOjA5OjEwLjg3OFoiLCJfX3YiOjB9LCJpYXQiOjE2NzU1MDg3NTMsImV4cCI6MTY3NTUxMjM1M30.bDOZg78rZGlx1_OMJiwqgCe2zxjhHZ0mUQnf8v6h84w",
+#     "Authorization":"",
 #     "Accept": "*/*",
 #     "CloudFront-Forwarded-Proto": "https",
 #     "CloudFront-Is-Desktop-Viewer": "true",
