@@ -5,15 +5,25 @@ require 'mongo'
 # Application config
 class Config
   class << self
-    def logger(type, message)
+    def self.logger(type, message)
       case type
       when 'info'
         puts message
       when 'debug'
-        message
+        puts 'message' unless stage.prod?
       when 'error'
-        puts 'message'
+        puts "Error: #{message}"
       end
+    end
+  
+    def prod?
+      true if stage == 'prod'
+    end
+  
+    def self.stage
+      'prod' unless ENV.fetch('STAGE').nil?
+  
+      'dev'
     end
 
     def mongo_client
@@ -21,7 +31,7 @@ class Config
     end
 
     def mongo_url
-      'mongodb://127.0.0.1:27017/test'
+      ENV.fetch('DB_CONNECTION_STRING')
     end
   end
 end
