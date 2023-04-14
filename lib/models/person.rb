@@ -3,6 +3,7 @@
 require_relative './base'
 
 module Models
+  # person model class
   class Person < Base
     def initialize(event, context)
       super(event, context)

@@ -25,7 +25,7 @@ module Models
     def correct_hash(hash)
       mapped_hash = @model.map(hash)
 
-      mapped_hash.keys.each do |key|
+      mapped_hash.each_key do |key|
         mapped_hash.delete(key) if hash[key].nil?
       end
 
@@ -36,11 +36,11 @@ module Models
 
     def find(hash = nil)
       return unless valid_hash?(hash)
+
       check_collection
       hash = correct_hash(hash)
 
-      hash
-      # @collection.find(hash)
+      @collection.find(hash)
     end
 
     def create(hash = nil)

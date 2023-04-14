@@ -4,34 +4,32 @@ require 'mongo'
 
 # Application config
 class Config
-  class << self
-    def self.logger(type, message)
-      case type
-      when 'info'
-        puts message
-      when 'debug'
-        puts 'message' unless stage.prod?
-      when 'error'
-        puts "Error: #{message}"
-      end
+  def self.logger(type, message)
+    case type
+    when 'info'
+      puts message
+    when 'debug'
+      puts 'message' unless stage.prod?
+    when 'error'
+      puts "Error: #{message}"
     end
-  
-    def prod?
-      true if stage == 'prod'
-    end
-  
-    def self.stage
-      'prod' unless ENV.fetch('STAGE').nil?
-  
-      'dev'
-    end
+  end
 
-    def mongo_client
-      Mongo::Client.new(mongo_url)
-    end
+  def self.prod?
+    true if stage == 'prod'
+  end
 
-    def mongo_url
-      ENV.fetch('DB_CONNECTION_STRING')
-    end
+  def self.stage
+    'prod' unless ENV.fetch('STAGE').nil?
+
+    'dev'
+  end
+
+  def self.mongo_client
+    Mongo::Client.new(mongo_url)
+  end
+
+  def self.mongo_url
+    ENV.fetch('DB_CONNECTION_STRING')
   end
 end
