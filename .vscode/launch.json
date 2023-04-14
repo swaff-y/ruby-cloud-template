@@ -5,7 +5,10 @@
       "name": "sinatra",
       "type": "Ruby",
       "request": "launch",
-      "program": "/Users/kyleswaffield/sei/cloud_template/bin/server.rb"
+      "program": "/Users/kyleswaffield/sei/cloud_template/bin/server.rb",
+      "env": {
+        "DB_CONNECTION_STRING":"mongodb://127.0.0.1:27017/test"
+      }
     }
   ]
 }
