@@ -9,10 +9,14 @@ class Config
     when 'info'
       puts message
     when 'debug'
-      puts 'message' unless stage.prod?
+      puts 'message' unless self.prod?
     when 'error'
       puts "Error: #{message}"
     end
+  end
+
+  def self.local?
+    true if stage == 'local'
   end
 
   def self.prod?
@@ -20,9 +24,9 @@ class Config
   end
 
   def self.stage
-    'prod' unless ENV.fetch('STAGE').nil?
+    ENV.fetch('STAGE') unless ENV.fetch('STAGE').nil?
 
-    'dev'
+    'local'
   end
 
   def self.mongo_client

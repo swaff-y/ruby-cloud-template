@@ -6,15 +6,30 @@ require 'json'
 class Responses
   class << self
     def _200(data)
-      JSON.generate(response(data, 200))
+      return JSON.generate(response(data, 200)) if Config.local?
+
+      {
+        statusCode: 200, 
+        body: JSON.generate(response(data, 200))
+      }
     end
 
     def _400(error)
-      JSON.generate(response(error, 400))
+      return JSON.generate(response(error, 400)) if Config.local?
+
+      {
+        statusCode: 400, 
+        body: JSON.generate(response(error, 400))
+      }
     end
 
     def _500(error)
-      JSON.generate(response(error, 500))
+      return JSON.generate(response(error, 500)) if Config.local?
+
+      {
+        statusCode: 500, 
+        body: JSON.generate(response(error, 500))
+      }
     end
 
     private
