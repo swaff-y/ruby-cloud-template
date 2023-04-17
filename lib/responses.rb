@@ -9,7 +9,7 @@ class Responses
       return JSON.generate(response(data, 200)) if Config.local?
 
       {
-        statusCode: 200, 
+        statusCode: 200,
         body: JSON.generate(response(data, 200))
       }
     end
@@ -18,7 +18,7 @@ class Responses
       return JSON.generate(response(error, 400)) if Config.local?
 
       {
-        statusCode: 400, 
+        statusCode: 400,
         body: JSON.generate(response(error, 400))
       }
     end
@@ -27,7 +27,7 @@ class Responses
       return JSON.generate(response(error, 500)) if Config.local?
 
       {
-        statusCode: 500, 
+        statusCode: 500,
         body: JSON.generate(response(error, 500))
       }
     end

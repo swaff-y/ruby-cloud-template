@@ -9,7 +9,7 @@ class Config
     when 'info'
       puts message
     when 'debug'
-      puts 'message' unless self.prod?
+      puts 'message' unless prod?
     when 'error'
       puts "Error: #{message}"
     end
