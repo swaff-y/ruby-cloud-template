@@ -10,22 +10,27 @@ end
 
 get '/person/:id' do
   event = create_event(params, request)
+  get_person_by_id(event: event, context: 'context')
+end
+
+get '/person' do
+  event = create_event(params, request)
   get_person(event: event, context: 'context')
 end
 
 post '/person' do
   event = create_event(params, request)
-  get_person(event: event, context: 'context')
+  post_person(event: event, context: 'context')
 end
 
 put '/person/:id' do
   event = create_event(params, request)
-  get_person(event: event, context: 'context')
+  put_person(event: event, context: 'context')
 end
 
 delete '/person/:id' do
   event = create_event(params, request)
-  get_person(event: event, context: 'context')
+  delete_person(event: event, context: 'context')
 end
 
 def create_event(params, request)

@@ -5,6 +5,8 @@ require_relative './base'
 module Models
   # person model class
   class Person < Base
+    attr_accessor :collection
+
     def initialize(event, context)
       super(event, context)
       client = Config.mongo_client
@@ -14,7 +16,11 @@ module Models
 
     def map(hash)
       {
-        'id' => hash['id']
+        'id' => hash['id'],
+        'firstname' => hash['firstname'],
+        'lastname' => hash['lastname'],
+        'weight' => hash['weight'],
+        'height' => hash['height']
       }
     end
   end

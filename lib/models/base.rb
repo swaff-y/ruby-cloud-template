@@ -34,13 +34,21 @@ module Models
       mapped_hash
     end
 
+    def find_by_id(id = nil)
+      return if id.nil?
+
+      check_collection
+
+      @collection.find(:_id => BSON::ObjectId(id)).first
+    end
+
     def find(hash = nil)
       return unless valid_hash?(hash)
 
       check_collection
       hash = correct_hash(hash)
 
-      @collection.find(hash)
+      @collection.find(hash).to_a
     end
 
     def create(hash = nil)

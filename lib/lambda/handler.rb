@@ -10,6 +10,11 @@ def api_status(event:, context:)
   status.get
 end
 
+def get_person_by_id(event:, context:)
+  person = Controllers::Person.new(event, context)
+  person.get_by_id
+end
+
 def get_person(event:, context:)
   person = Controllers::Person.new(event, context)
   person.get
@@ -27,5 +32,5 @@ end
 
 def delete_person(event:, context:)
   person = Controllers::Person.new(event, context)
-  person.put
+  person.delete
 end

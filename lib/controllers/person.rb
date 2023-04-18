@@ -13,6 +13,22 @@ module Controllers
       @context = context
     end
 
+    def get_by_id
+      Config.logger('debug', "Received Request: #{@event} #{@context}")
+      model = Models::Person.new(@event, @context)
+
+      # validate
+
+      # run model
+      res = model.find_by_id(@event.dig('pathParameters', 'id'))
+
+      Responses._200(res)
+    rescue Exceptions::InvalidParametersError => e
+      Responses._400({ message: e.message })
+    rescue StandardError => e
+      Responses._500({ message: e.message, backtrace: e.backtrace })
+    end
+
     def get
       Config.logger('debug', "Received Request: #{@event} #{@context}")
       model = Models::Person.new(@event, @context)
@@ -22,9 +38,9 @@ module Controllers
       # run processors
 
       # run model
-      res = model.find(@event['pathParameters'])
+      res = model.find(@event['queryStringParameters'])
 
-      Responses._200({ status: res })
+      Responses._200(res)
     rescue Exceptions::InvalidParametersError => e
       Responses._400({ message: e.message })
     rescue StandardError => e
