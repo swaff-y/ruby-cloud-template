@@ -14,13 +14,32 @@ module Models
       @model = self
     end
 
-    def schema(hash)
+    def schema
       {
-        'id' => hash['id'],
-        'firstname' => hash['firstname'],
-        'lastname' => hash['lastname'],
-        'weight' => hash['weight'],
-        'height' => hash['height']
+        firstname: {
+          type: String,
+          required: true,
+          unique: true,
+          description: 'A description'
+        },
+        lastname: {
+          type: String,
+          required: true,
+          unique: true,
+          description: 'A description'
+        },
+        weight: {
+          type: Integer,
+          required: true,
+          unique: true,
+          description: 'A description'
+        },
+        height: {
+          type: Integer,
+          required: true,
+          unique: true,
+          description: 'A description'
+        }
       }
     end
   end

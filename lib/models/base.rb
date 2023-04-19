@@ -23,10 +23,12 @@ module Models
     end
 
     def hash_schema(hash)
-      mapped_hash = @model.schema(hash)
+      mapped_hash = @model.schema
 
       mapped_hash.each_key do |key|
-        mapped_hash.delete(key) if hash[key].nil?
+        mapped_hash.delete(key) if hash[key.to_s].nil?
+
+        mapped_hash[key] = hash[key.to_s] if hash[key.to_s]
       end
 
       raise Exceptions::InvalidParametersError, 'The query parameters provided are not valid' if mapped_hash.empty?
