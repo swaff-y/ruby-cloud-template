@@ -6,6 +6,7 @@ require 'json'
 class Responses
   class << self
     def _200(data)
+      Config.logger('debug', '200 Response')
       return JSON.generate(response(data, 200)) if Config.local?
 
       {
@@ -15,6 +16,7 @@ class Responses
     end
 
     def _400(error)
+      Config.logger('debug', '400 Response')
       return JSON.generate(response(error, 400)) if Config.local?
 
       {
@@ -24,6 +26,7 @@ class Responses
     end
 
     def _500(error)
+      Config.logger('debug', '500 Response')
       return JSON.generate(response(error, 500)) if Config.local?
 
       {

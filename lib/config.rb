@@ -7,9 +7,9 @@ class Config
   def self.logger(type, message)
     case type
     when 'info'
-      puts message
+      puts "Info: #{message}"
     when 'debug'
-      puts 'message' unless prod?
+      puts "Debug: #{message}" unless prod?
     when 'error'
       puts "Error: #{message}"
     end

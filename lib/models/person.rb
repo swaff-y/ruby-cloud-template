@@ -14,7 +14,7 @@ module Models
       @model = self
     end
 
-    def map(hash)
+    def schema(hash)
       {
         'id' => hash['id'],
         'firstname' => hash['firstname'],

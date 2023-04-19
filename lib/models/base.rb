@@ -22,8 +22,8 @@ module Models
       raise Exceptions::UninitializedCollectionError, 'Collection has not been initalized' if @collection.nil?
     end
 
-    def correct_hash(hash)
-      mapped_hash = @model.map(hash)
+    def hash_schema(hash)
+      mapped_hash = @model.schema(hash)
 
       mapped_hash.each_key do |key|
         mapped_hash.delete(key) if hash[key].nil?
@@ -46,15 +46,21 @@ module Models
       return unless valid_hash?(hash)
 
       check_collection
-      hash = correct_hash(hash)
+      hash = hash_schema(hash)
 
       @collection.find(hash).to_a
     end
 
-    def create(hash = nil)
+    def post(hash = nil)
       return unless valid_hash?(hash)
 
-      hash
+      check_collection
+      hash = hash_schema(hash)
+
+      res = @collection.insert_one(hash)
+      return res.inserted_id if res.n. > 0
+
+      raise Exceptions::RecordNotCreatedError, 'Record could not be created'
     end
 
     def delete(hash = nil)

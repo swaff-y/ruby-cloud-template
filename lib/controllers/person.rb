@@ -3,6 +3,7 @@
 require 'json'
 require_relative '../responses'
 require_relative '../config'
+require_relative '../validation/person'
 require_relative '../models/person'
 
 module Controllers
@@ -11,34 +12,40 @@ module Controllers
     def initialize(event, context)
       @event = event
       @context = context
+      @validation = Validation::Person.new(event, context)
+      @model = Models::Person.new(event, context)
+      @pathParameters = event['pathParameters']
+      @queryStringParameters = event['queryStringParameters']
+      event['body'] = '' if event['body'].nil?
+      @body = JSON.parse(event['body']) unless event['body'].strip.empty?
     end
 
     def get_by_id
-      Config.logger('debug', "Received Request: #{@event} #{@context}")
-      model = Models::Person.new(@event, @context)
+      rec_log
 
       # validate
+      @validation.validate_get_by_id
 
       # run model
-      res = model.find_by_id(@event.dig('pathParameters', 'id'))
+      res = @model.find_by_id(@pathParameters['id'])
 
       Responses._200(res)
     rescue Exceptions::InvalidParametersError => e
       Responses._400({ message: e.message })
+    rescue BSON::ObjectId::Invalid => e
+      Responses._400({ message: 'Invalid person ID' })
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
     end
 
     def get
-      Config.logger('debug', "Received Request: #{@event} #{@context}")
-      model = Models::Person.new(@event, @context)
+      rec_log
 
       # validate
-
-      # run processors
+      @validation.validate_get
 
       # run model
-      res = model.find(@event['queryStringParameters'])
+      res = @model.find(@event['queryStringParameters'])
 
       Responses._200(res)
     rescue Exceptions::InvalidParametersError => e
@@ -48,24 +55,25 @@ module Controllers
     end
 
     def post
-      Config.logger('debug', "Received Request: #{@event} #{@context}")
-      model = Models::Person.new(@event, @context)
+      rec_log
 
       # validate
-
-      # run processors
+      @validation.validate_post
 
       # run model
-      model.create({ test: 'value' })
+      res = @model.post(@body)
 
-      Responses._200({ status: 'Ok' })
+      Responses._200({ Id: res.to_s })
+    rescue Exceptions::InvalidParametersError => e
+      Responses._400({ message: e.message })
+    rescue Exeptions::RecordNotCreatedError => e
+      Responses._500({ message: e.message, backtrace: '' })
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
     end
 
     def put
-      Config.logger('debug', "Received Request: #{@event} #{@context}")
-      model = Models::Person.new(@event, @context)
+      rec_log
 
       # validate
 
@@ -80,19 +88,20 @@ module Controllers
     end
 
     def delete
-      Config.logger('debug', "Received Request: #{@event} #{@context}")
-      model = Models::Person.new(@event, @context)
+      rec_log
 
       # validate
 
-      # run processors
-
       # run model
-      model.create({ test: 'value' })
+      @model.delete({ test: 'value' })
 
       Responses._200({ status: 'Ok' })
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
+    end
+
+    def rec_log
+      Config.logger('debug', "Received Request: #{@event} #{@context}")
     end
   end
 end
