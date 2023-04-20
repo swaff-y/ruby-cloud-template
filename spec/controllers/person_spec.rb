@@ -20,6 +20,7 @@ RSpec.describe Controllers::Person do
   before do
     allow(Validation::Person).to receive(:new).and_return(validation)
     allow(Models::Person).to receive(:new).and_return(model)
+    allow(Config).to receive(:logger).and_return('logged')
   end
 
   describe '.initalize' do
