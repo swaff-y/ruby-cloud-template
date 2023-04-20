@@ -2,6 +2,7 @@
 
 source 'https://rubygems.org'
 
+gem 'chronic_duration', '~> 0.10.6'
 gem 'sinatra'
 gem 'puma'
 gem 'fileutils'
@@ -17,3 +18,6 @@ gem 'simplecov'
 gem 'mail'
 gem 'httparty'
 gem 'mongo'
+gem 'logger'
+gem 'debase'
+gem 'ruby-debug-ide'

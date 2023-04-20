@@ -1,17 +1,21 @@
 # frozen_string_literal: true
 
 require 'mongo'
+require 'logger'
 
 # Application config
 class Config
   def self.logger(type, message)
+    log = Logger.new(STDOUT)
+    error_log = Logger.new(STDERR)
+    
     case type
     when 'info'
-      puts "Info: #{message}"
+      log.info(message)
     when 'debug'
-      puts "Debug: #{message}" unless prod?
+      log.debug(message) unless prod?
     when 'error'
-      puts "Error: #{message}"
+      error_log.error(message)
     end
   end
 

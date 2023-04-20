@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'chronic_duration'
 require 'json'
 require_relative '../responses'
 require_relative '../config'
@@ -18,6 +19,7 @@ module Controllers
       @queryStringParameters = event['queryStringParameters']
       event['body'] = '' if event['body'].nil?
       @body = JSON.parse(event['body']) unless event['body'].strip.empty?
+      @start = Time.now
     end
 
     def get_by_id
@@ -36,6 +38,8 @@ module Controllers
       Responses._400({ message: 'Invalid person ID' })
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
+    ensure
+      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, :format => :short)}")
     end
 
     def get
@@ -52,6 +56,8 @@ module Controllers
       Responses._400({ message: e.message })
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
+    ensure
+      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, :format => :short)}")
     end
 
     def post
@@ -70,6 +76,8 @@ module Controllers
       Responses._500({ message: e.message, backtrace: '' })
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
+    ensure
+      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, :format => :short)}")
     end
 
     def put
@@ -85,6 +93,8 @@ module Controllers
       Responses._200({ status: 'Ok' })
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
+    ensure
+      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, :format => :short)}")
     end
 
     def delete
@@ -98,6 +108,8 @@ module Controllers
       Responses._200({ status: 'Ok' })
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
+    ensure
+      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, :format => :short)}")
     end
 
     def rec_log
