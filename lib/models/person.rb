@@ -5,7 +5,7 @@ require_relative './base'
 module Models
   # person model class
   class Person < Base
-    attr_accessor :collection
+    attr_accessor :collection, :model
 
     def initialize(event, context)
       super(event, context)
@@ -31,13 +31,11 @@ module Models
         weight: {
           type: Integer,
           required: true,
-          unique: true,
           description: 'A description'
         },
         height: {
           type: Integer,
           required: true,
-          unique: true,
           description: 'A description'
         }
       }

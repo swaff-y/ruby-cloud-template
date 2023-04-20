@@ -2,6 +2,7 @@
 
 require_relative '../config'
 require_relative '../exceptions/exceptions'
+require_relative '../validation/schema_validation'
 
 module Models
   # base model class
@@ -22,13 +23,19 @@ module Models
       raise Exceptions::UninitializedCollectionError, 'Collection has not been initalized' if @collection.nil?
     end
 
-    def hash_schema(hash)
-      mapped_hash = @model.schema
+    def hash_schema(hash, type)
+      schema = @model.schema
+      mapped_hash = {}
 
-      mapped_hash.each_key do |key|
-        mapped_hash.delete(key) if hash[key.to_s].nil?
+      case type
+      when 'post'
+        Validation::SchemaValidation.validate_hash_on_schema(hash, schema, self)
+      when 'find'
+        Validation::SchemaValidation.validate_values_on_schema(hash, schema)
+      end
 
-        mapped_hash[key] = hash[key.to_s] if hash[key.to_s]
+      schema.each_key do |key|
+        mapped_hash[key] = hash[key.to_s] unless hash[key.to_s].nil?
       end
 
       raise Exceptions::InvalidParametersError, 'The query parameters provided are not valid' if mapped_hash.empty?
@@ -41,14 +48,14 @@ module Models
 
       check_collection
 
-      @collection.find(:_id => BSON::ObjectId(id)).first
+      @collection.find(_id: BSON::ObjectId(id)).first
     end
 
     def find(hash = nil)
       return unless valid_hash?(hash)
 
       check_collection
-      hash = hash_schema(hash)
+      hash = hash_schema(hash, 'find')
 
       @collection.find(hash).to_a
     end
@@ -57,10 +64,10 @@ module Models
       return unless valid_hash?(hash)
 
       check_collection
-      hash = hash_schema(hash)
+      hash = hash_schema(hash, 'post')
 
       res = @collection.insert_one(hash)
-      return res.inserted_id if res.n. > 0
+      return res.inserted_id if res.n.positive?
 
       raise Exceptions::RecordNotCreatedError, 'Record could not be created'
     end

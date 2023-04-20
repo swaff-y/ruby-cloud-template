@@ -6,9 +6,9 @@ require 'logger'
 # Application config
 class Config
   def self.logger(type, message)
-    log = Logger.new(STDOUT)
-    error_log = Logger.new(STDERR)
-    
+    log = Logger.new($stdout)
+    error_log = Logger.new($stderr)
+
     case type
     when 'info'
       log.info(message)

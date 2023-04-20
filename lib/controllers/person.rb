@@ -15,31 +15,31 @@ module Controllers
       @context = context
       @validation = Validation::Person.new(event, context)
       @model = Models::Person.new(event, context)
-      @pathParameters = event['pathParameters']
-      @queryStringParameters = event['queryStringParameters']
+      @path_parameters = event['pathParameters']
+      @query_string_parameters = event['queryStringParameters']
       event['body'] = '' if event['body'].nil?
       @body = JSON.parse(event['body']) unless event['body'].strip.empty?
       @start = Time.now
     end
 
-    def get_by_id
+    def get_by_id # rubocop: disable Naming/AccessorMethodName
       rec_log
 
       # validate
       @validation.validate_get_by_id
 
       # run model
-      res = @model.find_by_id(@pathParameters['id'])
+      res = @model.find_by_id(@path_parameters['id'])
 
       Responses._200(res)
     rescue Exceptions::InvalidParametersError => e
       Responses._400({ message: e.message })
-    rescue BSON::ObjectId::Invalid => e
+    rescue BSON::ObjectId::Invalid
       Responses._400({ message: 'Invalid person ID' })
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
     ensure
-      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, :format => :short)}")
+      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, format: :short)}")
     end
 
     def get
@@ -49,7 +49,7 @@ module Controllers
       @validation.validate_get
 
       # run model
-      res = @model.find(@event['queryStringParameters'])
+      res = @model.find(@query_string_parameters)
 
       Responses._200(res)
     rescue Exceptions::InvalidParametersError => e
@@ -57,7 +57,7 @@ module Controllers
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
     ensure
-      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, :format => :short)}")
+      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, format: :short)}")
     end
 
     def post
@@ -70,6 +70,8 @@ module Controllers
       res = @model.post(@body)
 
       Responses._200({ Id: res.to_s })
+    rescue Exceptions::SchemaError => e
+      Responses._400({ message: JSON.parse(e.message, { symbolize_names: true }) })
     rescue Exceptions::InvalidParametersError => e
       Responses._400({ message: e.message })
     rescue Exeptions::RecordNotCreatedError => e
@@ -77,7 +79,7 @@ module Controllers
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
     ensure
-      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, :format => :short)}")
+      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, format: :short)}")
     end
 
     def put
@@ -94,7 +96,7 @@ module Controllers
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
     ensure
-      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, :format => :short)}")
+      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, format: :short)}")
     end
 
     def delete
@@ -109,7 +111,7 @@ module Controllers
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
     ensure
-      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, :format => :short)}")
+      Config.logger('info', "Person Controller: Time completed -> #{ChronicDuration.output(Time.now - @start, format: :short)}")
     end
 
     def rec_log

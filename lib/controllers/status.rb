@@ -3,7 +3,6 @@
 require 'json'
 require_relative '../responses'
 require_relative '../config'
-require_relative '../models/status'
 
 module Controllers
   # Status controller
@@ -15,14 +14,6 @@ module Controllers
 
     def get
       Config.logger('debug', "Received Request: #{@event} #{@context}")
-      model = Models::Status.new(@event, @context)
-
-      # validate
-
-      # run processors
-
-      # run model
-      model.create({ test: 'value' })
 
       Responses._200({ status: 'Ok' })
     rescue StandardError => e
