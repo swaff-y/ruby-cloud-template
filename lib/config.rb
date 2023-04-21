@@ -32,7 +32,8 @@ class Config
   end
 
   def self.stage
-    ENV.fetch('STAGE') unless ENV.fetch('STAGE').nil?
+    stage = ENV.fetch('STAGE')
+    return stage unless stage.nil?
 
     'local'
   end
