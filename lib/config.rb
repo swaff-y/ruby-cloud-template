@@ -5,6 +5,10 @@ require 'logger'
 
 # Application config
 class Config
+  def self.coverage
+    80
+  end
+
   def self.logger(type, message)
     log = Logger.new($stdout)
     error_log = Logger.new($stderr)

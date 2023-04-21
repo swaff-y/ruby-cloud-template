@@ -9,4 +9,6 @@ module Exceptions
   class RecordNotCreatedError < StandardError; end
   # Error class for Uninitalized collection
   class UninitializedCollectionError < StandardError; end
+  # Error class for bad code coverage
+  class CoverageError < StandardError; end
 end
