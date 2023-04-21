@@ -14,8 +14,8 @@ RSpec.describe Controllers::Person do
     }
   end
 
-  let(:validation) { instance_double(Validation::Person, validate_get_by_id: 'validated') }
-  let(:model) { instance_double(Models::Person, find_by_id: 'found person') }
+  let(:validation) { instance_double(Validation::Person, validation_methods) }
+  let(:model) { instance_double(Models::Person, model_methods) }
 
   before do
     allow(Validation::Person).to receive(:new).and_return(validation)
@@ -30,20 +30,16 @@ RSpec.describe Controllers::Person do
   end
  
   describe '#get_by_id' do
-    before do
-      allow_any_instance_of(described_class).to receive(:rec_log).and_return('rec log')
-      allow(Responses).to receive(:_200).and_return('ok')
-    end
+    context 'when no errors' do
+      include_context '200 allow'
 
-    it 'returns a 200 response' do
-      expect(controller.get_by_id).to eq 'ok'
+      it 'returns a 200 response' do
+        expect(controller.get_by_id).to eq 'ok'
+      end
     end
 
     context 'when InvalidParametersError' do
-      before do
-        allow(validation).to receive(:validate_get_by_id).and_raise(Exceptions::InvalidParametersError, 'An error')
-        allow(Responses).to receive(:_400).and_return('400 invalid params')
-      end
+      include_context 'Invalid parameters error'
 
       it 'returns a 400 response' do
         expect(controller.get_by_id).to eq '400 invalid params'
@@ -62,14 +58,67 @@ RSpec.describe Controllers::Person do
     end
 
     context 'when StandardError' do
-      before do
-        allow(validation).to receive(:validate_get_by_id).and_raise(StandardError, 'An error')
-        allow(Responses).to receive(:_500).and_return('500 error')
-      end
+      include_context 'Standard error'
 
       it 'returns a 500 response' do
         expect(controller.get_by_id).to eq '500 error'
       end
     end
   end
+
+  describe "#get" do
+    context 'when no errors' do
+      include_context '200 allow'
+
+      it 'returns a 200 response' do
+        expect(controller.get).to eq 'ok'
+      end
+    end
+
+    context 'when InvalidParametersError' do
+      include_context 'Invalid parameters error'
+
+      it 'returns a 400 response' do
+        expect(controller.get).to eq '400 invalid params'
+      end
+    end
+
+    context 'when StandardError' do
+      include_context 'Standard error'
+
+      it 'returns a 500 response' do
+        expect(controller.get).to eq '500 error'
+      end
+    end
+  end
+
+  describe "#post" do
+    context 'when no errors' do
+      include_context '200 allow'
+
+      it 'returns a 200 response' do
+        expect(controller.post).to eq 'ok'
+      end
+    end
+
+    context 'when InvalidParametersError' do
+      before do
+        allow(validation).to receive(:validate_get).and_raise(Exceptions::InvalidParametersError, 'An error')
+        allow(Responses).to receive(:_400).and_return('400 invalid params')
+      end
+
+      it 'returns a 400 response' do
+        expect(controller.post).to eq '400 invalid params'
+      end
+    end
+
+    context 'when StandardError' do
+      include_context 'Standard error'
+
+      it 'returns a 500 response' do
+        expect(controller.post).to eq '500 error'
+      end
+    end
+  end
+
 end
