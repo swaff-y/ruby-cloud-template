@@ -52,6 +52,8 @@ module Controllers
       res = @model.find(@query_string_parameters)
 
       Responses._200(res)
+    rescue Exceptions::SchemaError => e
+      Responses._400({ message: JSON.parse(e.message, { symbolize_names: true }) })
     rescue Exceptions::InvalidParametersError => e
       Responses._400({ message: e.message })
     rescue StandardError => e

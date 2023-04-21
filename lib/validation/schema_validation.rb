@@ -25,11 +25,11 @@ module Validation
     def self.validate_values_on_schema(hash, schema)
       invalid_values = {}
 
-      schema.each_key do |key|
-        hash[key.to_s]
+      hash.each_key do |key|
+        invalid_values[key.to_sym] = "#{key} is not a valid search parameter" if schema[key.to_sym].nil?
       end
 
-      invalid_values
+      raise Exceptions::SchemaError, invalid_values.to_json unless invalid_values.empty?
     end
 
     def self.nil_required?(hash, schema, key)
