@@ -5,10 +5,6 @@ require_relative '../lib/config'
 RSpec.describe Config do
   let(:klass) { described_class }
 
-  describe '.coverage' do
-    it { expect(klass.coverage).to eq 80}
-  end
-
   describe '.logger' do
     let(:logger_methods) do
       {

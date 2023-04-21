@@ -5,10 +5,6 @@ require 'logger'
 
 # Application config
 class Config
-  def self.coverage
-    80
-  end
-
   def self.logger(type, message)
     log = Logger.new($stdout)
     error_log = Logger.new($stderr)
@@ -44,5 +40,13 @@ class Config
 
   def self.mongo_url
     ENV.fetch('DB_CONNECTION_STRING')
+  end
+
+  def self.correct_coverage?(hash)
+    hash.dig('result', 'line') < 85
+  end
+
+  def self.best_coverage?(hash)
+    hash.dig('result', 'line') > 95
   end
 end
