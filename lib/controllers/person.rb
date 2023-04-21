@@ -74,7 +74,7 @@ module Controllers
       Responses._400({ message: JSON.parse(e.message, { symbolize_names: true }) })
     rescue Exceptions::InvalidParametersError => e
       Responses._400({ message: e.message })
-    rescue Exeptions::RecordNotCreatedError => e
+    rescue Exceptions::RecordNotCreatedError => e
       Responses._500({ message: e.message, backtrace: '' })
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
