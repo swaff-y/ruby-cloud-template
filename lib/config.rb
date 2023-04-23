@@ -19,6 +19,10 @@ class Config
     end
   end
 
+  def self.application
+    'cloud_template'
+  end
+
   def self.local?
     true if stage == 'local'
   end
