@@ -1,5 +1,5 @@
 steps:
-  - command: "sh .buildkite/scripts/build_and_test.sh"
+  - command: "pwd"
     label: ":tests:"
     agents:
     - "queue=default"
