@@ -1,12 +1,4 @@
 steps:
-  - command: "which docker"
-    label: ":check docker:"
-    agents:
-    - "queue=default"
-  - command: "ls -la"
-    label: ":list files:"
-    agents:
-    - "queue=default"
   - command: "sh .buildkite/scripts/build_and_test.sh"
     label: ":tests:"
     agents:
