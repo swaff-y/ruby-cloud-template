@@ -1,5 +1,5 @@
 steps:
-  - command: "which buildkite-agent"
-    label: ":pipeline:"
+  - command: "sh ./scripts/build_and_test.sh"
+    label: ":tests:"
     agents:
     - "queue=default"
