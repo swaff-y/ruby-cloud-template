@@ -43,7 +43,7 @@ class Config
   end
 
   def self.correct_coverage?(hash)
-    hash.dig('result', 'line') < 80
+    hash.dig('result', 'line') < 85
   end
 
   def self.best_coverage?(hash)
