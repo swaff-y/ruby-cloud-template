@@ -1,5 +1,13 @@
 steps:
-  - command: "pwd"
+  - command: "sh .buildkite/scripts/build_and_test.sh"
+    label: ":check dir:"
+    agents:
+    - "queue=default"
+  - command: "sh .buildkite/scripts/build_and_test.sh"
+    label: ":list files:"
+    agents:
+    - "queue=default"
+  - command: "sh .buildkite/scripts/build_and_test.sh"
     label: ":tests:"
     agents:
     - "queue=default"
