@@ -7,6 +7,6 @@ steps:
   - wait
 
   - label: ":popcorn: Start deployment"
-    command: "pwd"
+    command: "sh .buildkite/scripts/deployment.sh"
     agents:
     - "queue=default"
