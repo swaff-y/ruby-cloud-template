@@ -89,7 +89,7 @@ module Controllers
 
       # validate
 
-      # run processors
+      # run processors - add a fullname
 
       # run model
       model.create({ test: 'value' })

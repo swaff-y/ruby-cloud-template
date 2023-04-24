@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Processors
-  # Status controller
+module Validation
+  # Status Valication class
   class Status
     def initialize(event, context)
       @event = event

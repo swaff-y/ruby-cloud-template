@@ -3,7 +3,7 @@
 require 'json'
 require_relative '../responses'
 require_relative '../config'
-require_relative '../processors/status_processor'
+require_relative '../validation/status'
 
 module Controllers
   # Status controller
@@ -11,16 +11,16 @@ module Controllers
     def initialize(event, context)
       @event = event
       @context = context
-      @processor = Processors::Status.new(event, context)
+      @validation = Validation::Status.new(event, context)
     end
 
     def get
       Config.logger('debug', "Received Request: #{@event} #{@context}")
 
-      #Run processor
-      db_name = @processor.process
+      # Validate db connection
+      db_name = @validation.process
 
-      Responses._200({ status: 'Ok', database: db_name  })
+      Responses._200({ status: 'Ok', database: db_name })
     rescue Exceptions::ConnetionError => e
       Responses._500({ message: e.message, backtrace: nil })
     rescue StandardError => e
