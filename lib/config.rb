@@ -27,13 +27,17 @@ class Config
     true if stage == 'local'
   end
 
+  def self.dev?
+    true if stage == 'dev'
+  end
+
   def self.prod?
     true if stage == 'prod'
   end
 
   def self.stage
     stage = ENV.fetch('STAGE')
-    return stage unless stage.nil?
+    return 'dev' unless stage.nil?
 
     'local'
   end

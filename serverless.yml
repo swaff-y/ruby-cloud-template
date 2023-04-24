@@ -1,0 +1,25 @@
+service: $APPLICATION
+
+provider:
+  name: aws
+  runtime: ruby2.7
+  profile: serverlessUser
+  stage: $STAGE
+  region: ap-southeast-2
+
+custom:
+  databaseUrl: $DATABASE_URL
+  apiKeys:
+    - name: devKey
+
+functions:
+  api_status:
+    handler: lib/lambda/handler.api_status
+    environment:
+      DATABASE_URL: ${self:custom.databaseUrl}
+    events:
+      - http: 
+            path: status
+            method: GET
+            cors: true
+            private: true

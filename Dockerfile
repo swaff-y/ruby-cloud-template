@@ -96,5 +96,6 @@ RUN bundle install
 
 COPY lib/ lib/
 COPY spec/ spec/
+COPY serverless.yml ../serverless.yml
 
 CMD [ "bunlde", "exec", "rake" ]

@@ -18,11 +18,11 @@ module Tasks
     def process
       raise Exceptions::CoverageError, @error_msg if Config.correct_coverage?(@cov_hash)
 
-      return puts "Code coverage: #{@best_msg}" if Config.best_coverage?(@cov_hash)
+      return Config.logger('info', "Code coverage: #{@best_msg}") if Config.best_coverage?(@cov_hash)
 
-      puts @avg_msg
+      Config.logger('info', @avg_msg)
     rescue Exceptions::CoverageError => e
-      puts e
+      Config.logger('error', e.message)
       exit(1)
     end
   end
