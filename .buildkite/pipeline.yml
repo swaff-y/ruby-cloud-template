@@ -3,6 +3,9 @@ steps:
     command: "sh .buildkite/scripts/build_and_test.sh"
     agents:
     - "queue=default"
+
+  - wait
+
   - label: ":popcorn: Start deployment"
     command: "pwd"
     agents:
