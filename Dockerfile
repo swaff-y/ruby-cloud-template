@@ -1,5 +1,8 @@
 FROM buildpack-deps:bullseye
 
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+
 # skip installing gem documentation
 RUN set -eux; \
 	mkdir -p /usr/local/etc; \

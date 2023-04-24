@@ -23,6 +23,10 @@ class Config
     'cloud_template'
   end
 
+  def self.application_serverless
+    'cloud-template'
+  end
+
   def self.local?
     true if stage == 'local'
   end
