@@ -34,7 +34,7 @@ module Tasks
     private
 
     def branch_name
-      ENV.fetch('BUILDKITE_BRANCH')
+      ENV.fetch('BRANCH')
     end
 
     def db_connection_string
