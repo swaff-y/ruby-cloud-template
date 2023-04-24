@@ -13,6 +13,7 @@ module Tasks
       @stage = stage
     rescue StandardError => e
       Config.logger('error', e.message)
+      exit(1)
     end
 
     def process
@@ -27,6 +28,7 @@ module Tasks
       `serverless deploy`
     rescue StandardError => e
       Config.logger('error', e.message)
+      exit(1)
     end
 
     private
