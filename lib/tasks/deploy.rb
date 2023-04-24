@@ -17,7 +17,6 @@ module Tasks
     end
 
     def process
-      Config.logger('info', "ZULU #{ENV.fetch('AWS_ACCESS_KEY_ID')}")
       database_url = db_connection_string
       @serverless_yml_hash['service'] = Config.application_serverless
       @serverless_yml_hash['provider']['stage'] = "#{@stage}-#{branch_name}" if @stage == 'dev' && @serverless_yml_hash['provider']
@@ -35,7 +34,7 @@ module Tasks
     private
 
     def branch_name
-      `git status | grep 'On branch'`.strip.split[2]
+      ENV.fetch('BUILDKITE_BRANCH')
     end
 
     def db_connection_string
