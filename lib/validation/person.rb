@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../exceptions/exceptions'
+
 module Validation
   # Status controller
   class Person

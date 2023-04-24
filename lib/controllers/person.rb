@@ -6,6 +6,7 @@ require_relative '../responses'
 require_relative '../config'
 require_relative '../validation/person'
 require_relative '../models/person'
+require_relative '../processors/fullname_processor'
 require_relative '../exceptions/exceptions'
 
 module Controllers
@@ -21,6 +22,7 @@ module Controllers
       event['body'] = '' if event['body'].nil?
       @body = JSON.parse(event['body']) unless event['body'].strip.empty?
       @start = Time.now
+      @fullname_processor = Processors::FullnameProcessor.new(event, context, @body)
     end
 
     def get_by_id # rubocop: disable Naming/AccessorMethodName
@@ -68,6 +70,9 @@ module Controllers
 
       # validate
       @validation.validate_post
+
+      # run processor
+      @fullname_processor.process
 
       # run model
       res = @model.post(@body)
