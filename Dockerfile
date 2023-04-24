@@ -94,11 +94,10 @@ RUN gem install bundler
 RUN mkdir -p /app
 WORKDIR /app
 
-COPY Gemfile Gemfile.lock Rakefile .rubocop.yml .rspec ./
+COPY Gemfile Gemfile.lock Rakefile .rubocop.yml .rspec serverless.yml ./
 RUN bundle install
 
 COPY lib/ lib/
 COPY spec/ spec/
-COPY serverless.yml ../serverless.yml
 
 CMD [ "bunlde", "exec", "rake" ]
