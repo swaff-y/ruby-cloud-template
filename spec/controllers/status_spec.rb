@@ -5,6 +5,17 @@ require_relative '../../lib/controllers/status'
 RSpec.describe Controllers::Status do
   subject(:controller) { described_class.new('event', 'context') }
 
+  let(:status_validation) { instance_double(Validation::Status, validation_methods) }
+  let(:validation_methods) do
+    {
+      process: 'cloud_template'
+    }
+  end
+
+  before do
+    allow(Validation::Status).to receive(:new).and_return(status_validation)
+  end
+
   describe '.initalize' do
     it 'initalizes without error' do
       expect { described_class.new('event', 'context') }.not_to raise_error

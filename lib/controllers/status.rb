@@ -4,6 +4,7 @@ require 'json'
 require_relative '../responses'
 require_relative '../config'
 require_relative '../validation/status'
+require_relative '../exceptions/exceptions'
 
 module Controllers
   # Status controller
@@ -21,7 +22,7 @@ module Controllers
       db_name = @validation.process
 
       Responses._200({ status: 'Ok', database: db_name })
-    rescue Exceptions::ConnetionError => e
+    rescue Exceptions::ConnectionError => e
       Responses._500({ message: e.message, backtrace: nil })
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })

@@ -11,4 +11,6 @@ module Exceptions
   class UninitializedCollectionError < StandardError; end
   # Error class for bad code coverage
   class CoverageError < StandardError; end
+  # Error class for connection errors
+  class ConnectionError < StandardError; end
 end

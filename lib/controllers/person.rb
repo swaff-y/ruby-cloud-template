@@ -6,6 +6,7 @@ require_relative '../responses'
 require_relative '../config'
 require_relative '../validation/person'
 require_relative '../models/person'
+require_relative '../exceptions/exceptions'
 
 module Controllers
   # Status controller
