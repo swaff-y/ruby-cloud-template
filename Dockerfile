@@ -94,7 +94,6 @@ RUN gem install bundler
 RUN mkdir -p /app
 WORKDIR /app
 
-RUN echo ${AWS_ACCESS_KEY_ID}
 COPY Gemfile Gemfile.lock Rakefile .rubocop.yml .rspec serverless.yml ./
 RUN bundle install
 
