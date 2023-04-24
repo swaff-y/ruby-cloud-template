@@ -9,7 +9,7 @@ module Tasks
   # base model class
   class Deploy
     def initialize(stage)
-      @serverless_yml_hash = YAML.parse(File.read('./serverless.yml')).to_ruby
+      @serverless_yml_hash = YAML.parse(File.read('/app/serverless.yml')).to_ruby
       @stage = stage
     rescue StandardError => e
       Config.logger('error', e.message)
@@ -23,7 +23,7 @@ module Tasks
       @serverless_yml_hash['provider']['stage'] = @stage if @stage == 'prod' && @serverless_yml_hash['provider']
       @serverless_yml_hash['custom']['databaseUrl'] = database_url unless database_url.nil? && !@serverless_yml_hash['custom']
 
-      File.write('./serverless.yml', @serverless_yml_hash.to_yaml)
+      File.write('/app/serverless.yml', @serverless_yml_hash.to_yaml)
 
       `serverless deploy`
     rescue StandardError => e
