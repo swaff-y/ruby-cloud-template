@@ -20,6 +20,11 @@ RSpec.shared_context 'controllers' do
       post: 'posted'
     }
   end
+  let(:processor_methods) do
+    {
+      process: 'processed'
+    }
+  end
 end
 
 RSpec.shared_context '200 allow' do

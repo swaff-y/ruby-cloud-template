@@ -8,10 +8,12 @@ RSpec.describe Controllers::Person do
 
   let(:validation) { instance_double(Validation::Person, validation_methods) }
   let(:model) { instance_double(Models::Person, model_methods) }
+  let(:processor) { instance_double(Processors::FullnameProcessor, processor_methods) }
 
   before do
     allow(Validation::Person).to receive(:new).and_return(validation)
     allow(Models::Person).to receive(:new).and_return(model)
+    allow(Processors::FullnameProcessor).to receive(:new).and_return(processor)
     allow(Config).to receive(:logger).and_return('logged')
   end
 

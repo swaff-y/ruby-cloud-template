@@ -11,10 +11,14 @@ RSpec.describe Models::Person do
       firstname: {
         type: String,
         required: true,
-        unique: true,
         description: 'A description'
       },
       lastname: {
+        type: String,
+        required: true,
+        description: 'A description'
+      },
+      fullname: {
         type: String,
         required: true,
         unique: true,
