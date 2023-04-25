@@ -109,10 +109,12 @@ WORKDIR /app
 RUN npm install serverless && \
     npm install serverless-offline
 
-COPY Gemfile Gemfile.lock Rakefile .rubocop.yml .rspec serverless.yml ./
+COPY Gemfile Gemfile.lock Rakefile serverless.yml package.json ./
 RUN bundle install
 
 COPY lib/ lib/
 COPY spec/ spec/
 
-CMD bunlde exec rake; serveless
+RUN bundle exec rake deploy_dev
+
+CMD serverless
