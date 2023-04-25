@@ -29,6 +29,7 @@ module Tasks
       puts `ls -la`
       File.write('serverless.yml', @serverless_yml_hash.to_yaml)
       puts `ls -la ../`
+      puts `ls -la ../bin/`
       puts `which serverless`
       puts '--->'
 
