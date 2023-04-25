@@ -107,8 +107,17 @@ RUN gem install bundler
 RUN mkdir -p /app
 WORKDIR /app
 
+RUN mkdir .aws
+RUN echo '[default]' >> .aws/credentials
+RUN echo aws_access_key_id=${AWS_ACCESS_KEY_ID} >> .aws/credentials
+RUN echo aws_secret_access_key=${AWS_SECRET_ACCESS_KEY} >> .aws/credentials
+
+RUN cat .aws/credentials
+
 RUN npm install -g serverless --save-dev && \
     npm install -g serverless-offline --save-dev
+
+RUN sls -v
 
 COPY Gemfile Gemfile.lock Rakefile serverless.yml ./
 RUN bundle install
@@ -116,4 +125,6 @@ RUN bundle install
 COPY lib/ lib/
 COPY spec/ spec/
 
-CMD bundle exec rake deploy_dev
+RUN bundle exec rake deploy_dev
+
+CMD serverless
