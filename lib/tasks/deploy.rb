@@ -9,7 +9,7 @@ module Tasks
   # base model class
   class Deploy
     def initialize(stage)
-      `ls -la`
+      puts `ls -la`
       @serverless_yml_hash = YAML.parse(File.read('/app/serverless.yml')).to_ruby
       @stage = stage
     rescue StandardError => e
