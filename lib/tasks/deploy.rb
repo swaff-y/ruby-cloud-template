@@ -11,6 +11,7 @@ module Tasks
     def initialize(stage)
       puts `ls -la`
       @serverless_yml_hash = YAML.parse(File.read('serverless.yml')).to_ruby
+      `rm serverless.yml`
       @stage = stage
     rescue StandardError => e
       Config.logger('error', e.message)
