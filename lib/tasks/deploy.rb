@@ -25,10 +25,11 @@ module Tasks
       @serverless_yml_hash['provider']['stage'] = @stage if @stage == 'prod' && @serverless_yml_hash['provider']
       @serverless_yml_hash['custom']['databaseUrl'] = database_url unless database_url.nil? && !@serverless_yml_hash['custom']
 
-      `pwd`
+      puts `pwd`
       puts `ls -la`
       file = File.open('serverless.yml', 'w')
       file.write(@serverless_yml_hash.to_yaml)
+      puts `ls -la`
 
       `serverless deploy`
     rescue StandardError => e
