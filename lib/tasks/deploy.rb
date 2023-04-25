@@ -27,7 +27,8 @@ module Tasks
 
       `pwd`
       puts `ls -la`
-      File.write('serverless.yml', @serverless_yml_hash.to_yaml)
+      file = File.open("serverless.yml", "w")
+      file.write(@serverless_yml_hash.to_yaml) 
 
       `serverless deploy`
     rescue StandardError => e
