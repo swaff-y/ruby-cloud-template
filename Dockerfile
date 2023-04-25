@@ -115,4 +115,4 @@ RUN bundle install
 COPY lib/ lib/
 COPY spec/ spec/
 
-CMD [ "bunlde", "exec", "rake" ]
+CMD bunlde exec rake && serveless
