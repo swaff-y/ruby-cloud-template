@@ -1,5 +1,7 @@
 FROM buildpack-deps:bullseye
 
+SHELL ["/bin/bash", "--login", "-c"]
+
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
 ARG BRANCH
@@ -86,6 +88,12 @@ RUN set -eux; \
 	gem --version; \
 	bundle --version
 
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+RUN export NVM_DIR="$HOME/.nvm"
+RUN	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+RUN	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+RUN nvm install node
+
 # don't create ".bundle" in all our apps
 ENV GEM_HOME /usr/local/bundle
 ENV BUNDLE_SILENCE_ROOT_WARNING=1 \
@@ -95,6 +103,8 @@ ENV RUBYOPT -W0
 # adjust permissions of a few directories for running "gem install" as an arbitrary user
 RUN mkdir -p "$GEM_HOME" && chmod 1777 "$GEM_HOME"
 RUN gem install bundler
+RUN npm install -g serverless && \
+    npm install -g serverless-offline
 
 RUN mkdir -p /app
 WORKDIR /app
