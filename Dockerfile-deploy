@@ -106,8 +106,9 @@ RUN gem install bundler
 
 RUN mkdir -p /app
 WORKDIR /app
-RUN npm install serverless && \
-    npm install serverless-offline
+
+RUN npm install -g serverless --save-dev && \
+    npm install -g serverless-offline --save-dev
 
 COPY Gemfile Gemfile.lock Rakefile serverless.yml ./
 RUN bundle install
@@ -115,6 +116,4 @@ RUN bundle install
 COPY lib/ lib/
 COPY spec/ spec/
 
-RUN bundle exec rake deploy_dev
-
-CMD serverless
+CMD bundle exec rake deploy_dev

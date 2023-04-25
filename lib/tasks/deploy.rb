@@ -25,6 +25,8 @@ module Tasks
       @serverless_yml_hash['custom']['databaseUrl'] = database_url unless database_url.nil? && !@serverless_yml_hash['custom']
 
       File.write('serverless.yml', @serverless_yml_hash.to_yaml)
+
+      `sls deploy`
     rescue StandardError => e
       Config.logger('error', e.message)
       exit(1)
