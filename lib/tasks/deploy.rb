@@ -30,6 +30,8 @@ module Tasks
       puts @serverless_yml_hash.to_yaml
       File.write('serverless.yml', @serverless_yml_hash.to_yaml)
       puts `ls -la`
+      puts `which serverless`
+      puts '--->'
 
       `serverless deploy`
     rescue StandardError => e
