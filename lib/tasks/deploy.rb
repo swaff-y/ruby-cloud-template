@@ -11,7 +11,6 @@ module Tasks
     def initialize(stage)
       puts `ls -la`
       @serverless_yml_hash = YAML.parse(File.read('serverless.yml')).to_ruby
-      puts @serverless_yml_hash
       `rm serverless.yml`
       @stage = stage
     rescue StandardError => e
@@ -29,8 +28,7 @@ module Tasks
       puts `pwd`
       puts `ls -la`
       puts @serverless_yml_hash.to_yaml
-      file = File.open('serverless.yml', 'w')
-      file.write(@serverless_yml_hash.to_yaml)
+      File.open('serverless.yml', 'w') { |file| file.write(@serverless_yml_hash.to_yaml) }
       puts `ls -la`
 
       `serverless deploy`
