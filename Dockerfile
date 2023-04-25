@@ -103,11 +103,11 @@ ENV RUBYOPT -W0
 # adjust permissions of a few directories for running "gem install" as an arbitrary user
 RUN mkdir -p "$GEM_HOME" && chmod 1777 "$GEM_HOME"
 RUN gem install bundler
-RUN npm install -g serverless && \
-    npm install -g serverless-offline
 
 RUN mkdir -p /app
 WORKDIR /app
+RUN npm install serverless && \
+    npm install serverless-offline
 
 COPY Gemfile Gemfile.lock Rakefile .rubocop.yml .rspec serverless.yml ./
 RUN bundle install
