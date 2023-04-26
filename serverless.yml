@@ -3,7 +3,7 @@ service: $APPLICATION
 provider:
   name: aws
   runtime: ruby2.7
-  profile: serverlessUser
+  profile: default
   stage: $STAGE
   region: ap-southeast-2
 
