@@ -156,4 +156,6 @@ RUN gem install bundler
 RUN npm install -g serverless --save-dev && \
     npm install -g serverless-offline --save-dev
 
+RUN npm install -g serverless-add-api-key --save-dev
+
 RUN sls -v
