@@ -8,20 +8,19 @@ require_relative '../exceptions/exceptions'
 module Tasks
   # base model class
   class Deploy
-    def initialize(stage)
+    def initialize
       @serverless_yml_hash = YAML.parse(File.read('serverless.yml')).to_ruby
       `rm serverless.yml`
-      @stage = stage
     rescue StandardError => e
       Config.logger('error', e.message)
       exit(1)
     end
 
-    def process
+    def process(type)
       database_url = db_connection_string
       @serverless_yml_hash['service'] = Config.application_serverless
-      @serverless_yml_hash['provider']['stage'] = "#{@stage}-#{branch_name}" if @stage == 'dev' && @serverless_yml_hash['provider']
-      @serverless_yml_hash['provider']['stage'] = @stage if @stage == 'prod' && @serverless_yml_hash['provider']
+      @serverless_yml_hash['provider']['stage'] = "dev-#{branch_name}" if type == 'dev' && @serverless_yml_hash['provider']
+      @serverless_yml_hash['provider']['stage'] = 'prod' if type == 'prod' && @serverless_yml_hash['provider']
       @serverless_yml_hash['custom']['databaseUrl'] = database_url unless database_url.nil? && !@serverless_yml_hash['custom']
 
       File.write('serverless.yml', @serverless_yml_hash.to_yaml)

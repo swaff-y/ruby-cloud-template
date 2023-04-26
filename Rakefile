@@ -18,13 +18,13 @@ task :coverage do
 end
 
 task :deploy_dev do
-  deploy = Tasks::Deploy.new('dev')
-  deploy.process
+  deploy = Tasks::Deploy.new
+  deploy.process('dev')
 end
 
 task :deploy_prod do
-  deploy = Tasks::Deploy.new('prod')
-  deploy.process
+  deploy = Tasks::Deploy.new
+  deploy.process('prod')
 end
 
 task default: %i[rubocop spec coverage]
