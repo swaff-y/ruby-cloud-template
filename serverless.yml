@@ -7,6 +7,9 @@ provider:
   stage: $STAGE
   region: ap-southeast-2
 
+plugins:
+  - serverless-add-api-key
+
 custom:
   databaseUrl: $DATABASE_URL
   apiKeys:

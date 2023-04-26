@@ -1,5 +1,7 @@
 FROM swaffy/cloud-template-base
 
+RUN npm i serverless-add-api-key
+
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
 ARG SLS_ACCESS_KEY_ID
