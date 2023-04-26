@@ -1,5 +1,5 @@
 #!/bin/bash
 
-docker build -f Dockerfile-test --tag cloud-template .
+docker build -f Dockerfile-test --tag cloud-template-test .
 
-docker run --rm cloud-template bundle exec rake
+docker run --rm cloud-template-test bundle exec rake
