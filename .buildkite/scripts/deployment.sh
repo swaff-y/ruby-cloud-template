@@ -11,7 +11,7 @@ then
     --build-arg "SLS_SECRET_ACCESS_KEY=${SLS_SECRET_ACCESS_KEY}" .
 else
   docker build \
-    -f Dockerfile-deploy-dev \
+    -f Dockerfile \
     --tag cloud-template-deploy \
     --build-arg "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
     --build-arg "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \

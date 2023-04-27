@@ -2,6 +2,10 @@ service: $APPLICATION
 
 provider:
   name: aws
+  ecr:
+    images:
+      cloud-template-lambda:
+        path: ./
   runtime: ruby2.7
   profile: default
   stage: $STAGE
@@ -17,12 +21,9 @@ custom:
 
 functions:
   api_status:
-    handler: lib/lambda/handler.api_status
+    image:
+      name: cloud-template-lambda
     environment:
       DATABASE_URL: ${self:custom.databaseUrl}
     events:
-      - http: 
-            path: status
-            method: GET
-            cors: true
-            private: true
+      - httpApi: 'GET /status'

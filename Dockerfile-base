@@ -26,6 +26,7 @@ RUN set -eux; \
 		dpkg-dev \
 		libgdbm-dev \
 		ruby \
+    libssl-dev \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
