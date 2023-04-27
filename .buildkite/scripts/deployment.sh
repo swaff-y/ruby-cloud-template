@@ -19,5 +19,5 @@ else
     --build-arg "SLS_SECRET_ACCESS_KEY=${SLS_SECRET_ACCESS_KEY}" \
     --build-arg "BRANCH=${BUILDKITE_BRANCH}" .
 fi
-
+ 
 docker run --rm cloud-template-deploy sls deploy
