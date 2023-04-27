@@ -18,7 +18,7 @@ RUN sls config credentials \
 RUN mkdir -p /app
 WORKDIR /app
 
-COPY Gemfile Gemfile.lock Rakefile serverless.yml Dockerfile ./
+COPY Gemfile Gemfile.lock Rakefile serverless.yml ./
 RUN bundle install
 
 COPY lib/ lib/
