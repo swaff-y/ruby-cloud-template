@@ -12,7 +12,7 @@ module Tasks
       @serverless_yml_hash = YAML.parse(File.read('serverless.yml')).to_ruby
       `rm serverless.yml`
     rescue StandardError => e
-      Config.logger('error', e.message)
+      Config.logger('error', "int #{e.message}")
       exit(1)
     end
 
@@ -25,7 +25,7 @@ module Tasks
 
       File.write('serverless.yml', @serverless_yml_hash.to_yaml)
     rescue StandardError => e
-      Config.logger('error', e.backtrace)
+      Config.logger('error', "Proc #{e.message}")
       exit(1)
     end
 
