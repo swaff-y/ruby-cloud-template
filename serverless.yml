@@ -28,6 +28,6 @@ functions:
       entryPoint:
         - '/lambda-entrypoint.sh'
     events:
-      - httpApi:
+      - http:
           path: /status
           method: get
