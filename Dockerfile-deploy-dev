@@ -1,14 +1,7 @@
 FROM swaffy/cloud-template-base:latest
 
-RUN cd /etc/ssl
-RUN chmod o+rx certs
-
-RUN apt-get install \ 
-	docker-ce \ 
-	docker-ce-cli \
-	containerd.io \
-	docker-buildx-plugin \
-	docker-compose-plugin
+RUN curl -fsSL https://get.docker.com -o get-docker.sh
+RUN sh get-docker.sh
 
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
