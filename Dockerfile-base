@@ -26,6 +26,7 @@ RUN set -eux; \
 		dpkg-dev \
 		libgdbm-dev \
 		ruby \
+    libssl-dev\
 	; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
@@ -159,3 +160,6 @@ RUN npm install -g serverless --save-dev && \
 RUN npm install -g serverless-add-api-key --save-dev
 
 RUN sls -v
+
+RUN curl -fsSL https://get.docker.com -o get-docker.sh
+RUN sh get-docker.sh

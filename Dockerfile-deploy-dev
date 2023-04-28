@@ -1,8 +1,5 @@
 FROM swaffy/cloud-template-base:latest
 
-RUN curl -fsSL https://get.docker.com -o get-docker.sh
-RUN sh get-docker.sh
-
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
 ARG SLS_ACCESS_KEY_ID
@@ -27,5 +24,6 @@ RUN bundle install
 COPY lib/ lib/
 
 RUN bundle exec rake deploy_dev
+RUN systemctl start docker
 
 CMD sls
