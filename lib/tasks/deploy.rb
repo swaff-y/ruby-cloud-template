@@ -25,7 +25,7 @@ module Tasks
 
       File.write('serverless.yml', @serverless_yml_hash.to_yaml)
     rescue StandardError => e
-      Config.logger('error', e.message)
+      Config.logger('error', { message: e.message, backtrace: e.backtrace }.to_json)
       exit(1)
     end
 

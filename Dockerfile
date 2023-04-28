@@ -1,8 +1,13 @@
 FROM swaffy/cloud-template-base:latest
 
-RUN gem install aws_lambda_ric
+RUN apt-get install -y --no-install-recommends \
+  libssl \
+  libssl-dev
 
-COPY Gemfile Gemfile.lock Rakefile serverless.yml Dockerfile ./
+RUN gem install aws_lambda_ric
+RUN npm install serverless-add-api-key
+
+COPY Gemfile Gemfile.lock Rakefile Dockerfile ./
 RUN bundle config set --local without 'development test'
 RUN bundle install
 
