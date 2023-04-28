@@ -2,6 +2,10 @@ service: $APPLICATION
 
 provider:
   name: aws
+  ecr:
+    images:
+      cloud-template-lambda:
+        path: ./
   runtime: ruby2.7
   profile: default
   stage: $STAGE
@@ -19,7 +23,6 @@ functions:
   api_status:
     image:
       name: cloud-template-lambda
-        path: ./
       command:
         - lib/lambda/handler.api_status
       entryPoint:
