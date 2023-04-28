@@ -1,5 +1,8 @@
 FROM swaffy/cloud-template-base:latest
 
+RUN cd /etc/ssl
+RUN chmod o+rx certs
+
 RUN apt-get install \ 
 	docker-ce \ 
 	docker-ce-cli \
