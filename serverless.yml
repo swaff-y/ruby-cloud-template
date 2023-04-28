@@ -27,7 +27,7 @@ functions:
         - lib/lambda/handler.api_status
       entryPoint:
         - '/lambda-entrypoint.sh'
-      events:
-        - httpApi:
-            path: /status
-            method: get
+    events:
+      - httpApi:
+          path: /status
+          method: get
