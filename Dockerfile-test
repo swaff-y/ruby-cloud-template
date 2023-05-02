@@ -16,6 +16,5 @@ RUN bundle install
 
 COPY lib/ lib/
 COPY spec/ spec/
-COPY coverage/ coverage/
 
 CMD bunlde exec rake

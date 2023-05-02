@@ -25,7 +25,6 @@ fi
 pwd
 
 docker run \
-  --mount type=bind,source="$(pwd)"/coverage,target=/app/coverage \
   cloud-template-deploy bundle exec rake
 
 if [ "$BUILDKITE_BRANCH" == "main"  ]
