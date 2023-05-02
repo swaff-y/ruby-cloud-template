@@ -1,5 +1,13 @@
 FROM swaffy/cloud-template-base
 
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+ARG BRANCH
+
+ENV AWS_ACCESS_KEY_ID ${AWS_ACCESS_KEY_ID}
+ENV AWS_SECRET_ACCESS_KEY ${AWS_SECRET_ACCESS_KEY}
+ENV BRANCH ${BRANCH}
+
 RUN mkdir -p /app
 WORKDIR /app
 
@@ -8,5 +16,6 @@ RUN bundle install
 
 COPY lib/ lib/
 COPY spec/ spec/
+COPY coverage/ coverage/
 
 CMD bunlde exec rake

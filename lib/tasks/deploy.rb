@@ -10,7 +10,6 @@ module Tasks
   class Deploy
     def initialize
       @serverless_yml_hash = YAML.parse(File.read('serverless.yml')).to_ruby
-      `rm serverless.yml`
     rescue StandardError => e
       pwd = `pwd`
       ls = `ls -la`
@@ -35,6 +34,8 @@ module Tasks
 
     def branch_name
       ENV.fetch('BRANCH')
+    rescue StandardError
+      'no-branch'
     end
 
     def db_connection_string
