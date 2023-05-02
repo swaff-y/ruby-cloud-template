@@ -3,7 +3,9 @@ env:
 
 steps:
   - label: ":package: Build, Package and run tests"
-    command: "sh .buildkite/scripts/build_and_test.sh"
+    commands:
+      - ls -la
+      - "sh .buildkite/scripts/build_and_test.sh"
     agents:
       queue: default
     artifact_paths:
