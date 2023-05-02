@@ -1,12 +1,41 @@
+env:
+  ENV_VAR: xyz
+
 steps:
   - label: ":package: Build, Package and run tests"
     command: "sh .buildkite/scripts/build_and_test.sh"
     agents:
-    - "queue=default"
+      queue: default
+    artifact_paths:
+      - "coverage/**/*"
+
+  # - name: ":desert_island: Build deployment artifacts"
+  #   commands:
+  #     - 'docker pull <image>'
+  #     - 'docker run --rm etc'
+  #   agents:
+  #     queue: default
+  #   env: 
+  #     STAGE: 'dev'
+  #   artifact_paths:
+  #     - build_deploy.sh
+  #     - build_temp.yml
+
 
   - wait
 
-  - label: ":popcorn: Start deployment"
-    command: "sh .buildkite/scripts/deployment.sh"
+  - name: ':desert_island: Deploy'
+    commands:
+      - 'buildkite-agent artifact download "coverage/*" .'
+      - 'ls -la'
+      # - 'chmod a+x build_deploy.sh'
+      # - './build_deploy.sh build_temp.yml'
     agents:
-    - "queue=default"
+      queue: default
+    # env:
+    #   VAR: 'value'
+
+  # - label: ":popcorn: Start deployment"
+  #   command: "sh .buildkite/scripts/deployment.sh"
+  #   agents:
+  #   - "queue=default"

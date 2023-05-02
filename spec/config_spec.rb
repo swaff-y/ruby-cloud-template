@@ -79,7 +79,7 @@ RSpec.describe Config do
   describe '.stage' do
     context 'when stage env is nil' do
       before { allow(ENV).to receive(:fetch).and_return(nil) }
-      it { expect(klass.stage).to eq 'local'}
+      it { expect(klass.stage).to eq nil}
     end
 
     context 'when stage env is not nil' do

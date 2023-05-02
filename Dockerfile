@@ -1,21 +1,15 @@
-FROM swaffy/cloud-template-base:latest
+FROM public.ecr.aws/lambda/ruby:latest
 
-RUN apt-get install -y --no-install-recommends \
-  libssl \
-  libssl-dev
-
-RUN gem install aws_lambda_ric
-RUN npm install serverless-add-api-key
+RUN yum update -y
+RUN yum install -y openssl-devel mongodb-org make gcc
 
 COPY Gemfile Gemfile.lock Rakefile Dockerfile ./
 RUN bundle config set --local without 'development test'
+ENV GEM_HOME=${LAMBDA_TASK_ROOT}
 RUN bundle install
 
-RUN mkdir -p /app
-WORKDIR /app
+ENV STAGE kaos
 
 COPY lib/ lib/
 
-# You can overwrite command in `serverless.yml` template
-ENTRYPOINT ["/usr/local/bin/aws_lambda_ric"]
 CMD ["lib/lambda/handler.api_status"]

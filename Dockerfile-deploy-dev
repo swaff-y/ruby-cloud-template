@@ -24,6 +24,5 @@ RUN bundle install
 COPY lib/ lib/
 
 RUN bundle exec rake deploy_dev
-RUN systemctl start docker
 
 CMD sls

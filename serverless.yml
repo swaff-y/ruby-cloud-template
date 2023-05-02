@@ -2,6 +2,7 @@ service: $APPLICATION
 
 provider:
   name: aws
+  architecture: arm64
   ecr:
     images:
       cloud-template-lambda:
@@ -31,3 +32,31 @@ functions:
       - http:
           path: /status
           method: get
+          cors: true
+          private: true
+  get_person_by_id:
+    image:
+      name: cloud-template-lambda
+      command:
+        - lib/lambda/handler.get_person_by_id
+      entryPoint:
+        - '/lambda-entrypoint.sh'
+    events:
+      - http:
+          path: /person/{id}
+          method: get
+          cors: true
+          private: true
+  get_person:
+    image:
+      name: cloud-template-lambda
+      command:
+        - lib/lambda/handler.get_person
+      entryPoint:
+        - '/lambda-entrypoint.sh'
+    events:
+      - http:
+          path: /person
+          method: get
+          cors: true
+          private: true
