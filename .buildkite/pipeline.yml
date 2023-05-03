@@ -3,6 +3,7 @@
 steps:
   - label: ":package: Build, Package and run tests"
     commands:
+      - "env"
       - "cp ./serverless.yml /Users/kyleswaffield/docker/serverless.yml"
       - "sh .buildkite/scripts/build_and_test.sh"
     agents:
@@ -25,7 +26,6 @@ steps:
   - wait
 
   - block: ':hammer: Remove Stack'
-    # branches: '!mastser'
 
   - name: ':package: Removing stack'
     commands: 
