@@ -6,7 +6,6 @@ steps:
     commands:
       - "cp ./serverless.yml /Users/kyleswaffield/docker/serverless.yml"
       - "sh .buildkite/scripts/build_and_test.sh"
-      - "rm serverless.yml"
     agents:
       queue: default
     artifact_paths:
@@ -29,6 +28,7 @@ steps:
 
   - name: ':desert_island: Deploy'
     commands:
+      - "rm serverless.yml"
       - 'buildkite-agent artifact download "Users/kyleswaffield/docker/serverless.yml" .'
       - 'pwd'
       - 'ls -la'
