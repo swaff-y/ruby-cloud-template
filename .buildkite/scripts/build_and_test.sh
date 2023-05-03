@@ -20,11 +20,6 @@ else
     --build-arg "BRANCH=${BUILDKITE_BRANCH}" .
 fi
 
-# docker build -f Dockerfile-test --tag cloud-template-test .
-
-pwd
-ls -la
-
 docker run \
   cloud-template-deploy bundle exec rake
 
