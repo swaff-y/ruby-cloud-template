@@ -29,8 +29,7 @@ steps:
   - name: ':desert_island: Deploy'
     commands:
       - "rm serverless.yml"
-      - 'buildkite-agent artifact download "Users/kyleswaffield/docker/serverless.yml" .'
-      - "cp Users/kyleswaffield/docker/serverless.yml serverless.yml"
+      - 'buildkite-agent artifact download "Users/kyleswaffield/docker/serverless.yml" serverless.yml'
       - 'pwd'
       - 'ls -la'
       - 'cat serverless.yml'
