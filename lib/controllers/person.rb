@@ -36,7 +36,7 @@ module Controllers
 
       Responses._200(res)
     rescue Exceptions::InvalidParametersError => e
-      Responses._400({ message: "InvalidParametersError: #{e.message}" })
+      Responses._400({ message: e.message })
     rescue BSON::ObjectId::Invalid
       Responses._400({ message: 'Invalid person ID' })
     rescue StandardError => e
