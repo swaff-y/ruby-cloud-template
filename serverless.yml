@@ -11,6 +11,11 @@ provider:
   profile: default
   stage: $STAGE
   region: ap-southeast-2
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'secretsmanager:GetSecretValue'
+      Resource: 'arn:aws:secretsmanager:ap-southeast-2:572131386763:secret:Cloud-template-db-connection-string-*'
 
 plugins:
   - serverless-add-api-key
