@@ -4,6 +4,7 @@ env:
 steps:
   - label: ":package: Build, Package and run tests"
     commands:
+      - "cp ./serverless.yml /Users/kyleswaffield/docker/serverless.yml"
       - "sh .buildkite/scripts/build_and_test.sh"
     agents:
       queue: default
