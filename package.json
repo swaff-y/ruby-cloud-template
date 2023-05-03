@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "serverless-add-api-key": "^4.2.1"
+  }
+}
