@@ -12,7 +12,8 @@ steps:
     artifact_paths:
       - "/Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml"
 
-  - wait
+  - wait: ~
+    continue_on_failure: false
 
   - block: ':computer: Deploy stack?'
 
