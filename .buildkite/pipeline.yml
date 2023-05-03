@@ -1,5 +1,4 @@
-env:
-  ENV_VAR: xyz
+
 
 steps:
   - label: ":package: Build, Package and run tests"
@@ -10,19 +9,6 @@ steps:
       queue: default
     artifact_paths:
       - "/Users/kyleswaffield/docker/serverless.yml"
-
-  # - name: ":desert_island: Build deployment artifacts"
-  #   commands:
-  #     - 'docker pull <image>'
-  #     - 'docker run --rm etc'
-  #   agents:
-  #     queue: default
-  #   env: 
-  #     STAGE: 'dev'
-  #   artifact_paths:
-  #     - build_deploy.sh
-  #     - build_temp.yml
-
 
   - wait
 
@@ -35,10 +21,17 @@ steps:
       - 'sls deploy'
     agents:
       queue: default
-    # env:
-    #   VAR: 'value'
 
-  # - label: ":popcorn: Start deployment"
-  #   command: "sh .buildkite/scripts/deployment.sh"
-  #   agents:
-  #   - "queue=default"
+  - wait
+
+  - block: ':hammer: Remove Stack'
+    # branches: '!mastser'
+
+  - name: ':package: Removing stack'
+    commands: 
+      - 'buildkite-agent artifact download "Users/kyleswaffield/docker/serverless.yml" .'
+      - "cp Users/kyleswaffield/docker/serverless.yml ."
+      - "npm install"
+      - 'sls remove'
+    agents:
+      queue: default
