@@ -14,7 +14,7 @@ steps:
 
   - wait
 
-  - block: ':deployparrot: Deploy stack?'
+  - block: ':computer: Deploy stack?'
 
   - name: ':desert_island: Deploy'
     commands:
