@@ -14,6 +14,8 @@ steps:
 
   - wait
 
+  - block: ':deployparrot: Deploy stack?'
+
   - name: ':desert_island: Deploy'
     commands:
       - "rm serverless.yml"
