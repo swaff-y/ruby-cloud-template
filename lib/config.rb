@@ -2,6 +2,8 @@
 
 require 'mongo'
 require 'logger'
+require 'yaml'
+require 'aws-sdk-secretsmanager'
 
 # Application config
 class Config
@@ -23,8 +25,16 @@ class Config
     'cloud_template'
   end
 
+  def self.application_serverless
+    'cloud-template'
+  end
+
   def self.local?
     true if stage == 'local'
+  end
+
+  def self.dev?
+    true if stage == 'dev'
   end
 
   def self.prod?
@@ -32,9 +42,8 @@ class Config
   end
 
   def self.stage
-    stage = ENV.fetch('STAGE')
-    return stage unless stage.nil?
-
+    ENV.fetch('STAGE')
+  rescue KeyError
     'local'
   end
 
@@ -44,6 +53,8 @@ class Config
 
   def self.mongo_url
     ENV.fetch('DB_CONNECTION_STRING')
+  rescue KeyError
+    db_connection_string
   end
 
   def self.correct_coverage?(hash)
@@ -52,5 +63,12 @@ class Config
 
   def self.best_coverage?(hash)
     hash.dig('result', 'line') > 95
+  end
+
+  def self.db_connection_string
+    client = Aws::SecretsManager::Client.new(region: 'ap-southeast-2')
+
+    get_secret_value_response = client.get_secret_value(secret_id: 'Cloud-template-db-connection-string')
+    JSON.parse(get_secret_value_response.secret_string)['DB_CONNECTION_STRING']
   end
 end

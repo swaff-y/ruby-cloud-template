@@ -1,0 +1,67 @@
+service: $APPLICATION
+
+provider:
+  name: aws
+  architecture: arm64
+  ecr:
+    images:
+      cloud-template-lambda:
+        path: ./
+  runtime: ruby2.7
+  profile: default
+  stage: $STAGE
+  region: ap-southeast-2
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'secretsmanager:GetSecretValue'
+      Resource: 'arn:aws:secretsmanager:ap-southeast-2:572131386763:secret:Cloud-template-db-connection-string-*'
+
+plugins:
+  - serverless-add-api-key
+
+custom:
+  databaseUrl: $DATABASE_URL
+  apiKeys:
+    - name: devKey
+
+functions:
+  api_status:
+    image:
+      name: cloud-template-lambda
+      command:
+        - lib/lambda/handler.api_status
+      entryPoint:
+        - '/lambda-entrypoint.sh'
+    events:
+      - http:
+          path: /status
+          method: get
+          cors: true
+          private: true
+  get_person_by_id:
+    image:
+      name: cloud-template-lambda
+      command:
+        - lib/lambda/handler.get_person_by_id
+      entryPoint:
+        - '/lambda-entrypoint.sh'
+    events:
+      - http:
+          path: /person/{id}
+          method: get
+          cors: true
+          private: true
+  get_person:
+    image:
+      name: cloud-template-lambda
+      command:
+        - lib/lambda/handler.get_person
+      entryPoint:
+        - '/lambda-entrypoint.sh'
+    events:
+      - http:
+          path: /person
+          method: get
+          cors: true
+          private: true

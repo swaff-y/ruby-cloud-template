@@ -20,3 +20,6 @@ Style/IfUnlessModifier:
 
 Style/CommentedKeyword:
   Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false

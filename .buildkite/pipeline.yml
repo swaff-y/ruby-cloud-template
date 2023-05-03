@@ -1,5 +1,38 @@
+
+
 steps:
-  - command: "sh .buildkite/scripts/build_and_test.sh"
-    label: ":tests:"
+  - label: ":package: Build, Package and run tests"
+    commands:
+      - "mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}"
+      - "mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}"
+      - "cp ./serverless.yml /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml"
+      - "sh .buildkite/scripts/build_and_test.sh"
     agents:
-    - "queue=default"
+      queue: default
+    artifact_paths:
+      - "/Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml"
+
+  - wait
+
+  - name: ':desert_island: Deploy'
+    commands:
+      - "rm serverless.yml"
+      - 'buildkite-agent artifact download "Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml" .'
+      - "cp Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml ."
+      - "npm install"
+      - 'sls deploy'
+    agents:
+      queue: default
+
+  - wait
+
+  - block: ':hammer: Remove Stack'
+
+  - name: ':package: Removing stack'
+    commands: 
+      - 'buildkite-agent artifact download "Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml" .'
+      - "cp Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml ."
+      - "npm install"
+      - 'sls remove'
+    agents:
+      queue: default
