@@ -27,7 +27,7 @@ steps:
 
   - name: ':desert_island: Deploy'
     commands:
-      - 'buildkite-agent artifact download "coverage/*" .'
+      - 'buildkite-agent artifact download "/Users/kyleswaffield/docker/serverless.yml" .'
       - 'ls -la'
       # - 'chmod a+x build_deploy.sh'
       # - './build_deploy.sh build_temp.yml'
