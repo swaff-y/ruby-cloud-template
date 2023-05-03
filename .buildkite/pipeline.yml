@@ -30,6 +30,7 @@ steps:
     commands:
       - 'buildkite-agent artifact download "Users/kyleswaffield/docker/serverless.yml" .'
       - 'ls -la'
+      - 'cat serverless.yml'
       # - 'sls deploy'
       # - './build_deploy.sh build_temp.yml'
     agents:
