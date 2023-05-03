@@ -6,6 +6,7 @@ steps:
     commands:
       - "cp ./serverless.yml /Users/kyleswaffield/docker/serverless.yml"
       - "sh .buildkite/scripts/build_and_test.sh"
+      - "rm serverless.yml"
     agents:
       queue: default
     artifact_paths:
