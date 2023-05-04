@@ -5,12 +5,12 @@ require_relative '../exceptions/exceptions'
 module Validation
   # Status controller
   class SchemaValidation
-    def self.validate_hash_on_schema(hash, schema, model)
+    def self.validate_hash_on_schema(hash, schema, model, type)
       invalid_values = {}
 
       schema.each_key do |key|
         # validate presence
-        invalid_values[key] = "#{key} is a required value" if nil_required?(hash, schema, key)
+        invalid_values[key] = "#{key} is a required value" if nil_required?(hash, schema, key) && type == 'post'
 
         # validate type
         invalid_values[key] = "#{key} is not a #{schema.dig(key, :type)}" if type_valid?(hash, schema, key)
@@ -41,6 +41,8 @@ module Validation
     end
 
     def self.type_valid?(hash, schema, key)
+      return false if hash[key].nil?
+
       schema.dig(key, :type) && !hash[key.to_s].is_a?(schema.dig(key, :type))
     end
 

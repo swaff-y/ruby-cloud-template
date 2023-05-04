@@ -1,22 +1,20 @@
 #!/bin/bash
 
+set -e
+
 if [ "$BUILDKITE_BRANCH" == "main"  ]
 then
   docker build \
     -f Dockerfile-test \
     --tag cloud-template-deploy \
     --build-arg "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
-    --build-arg "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
-    --build-arg "SLS_ACCESS_KEY_ID=${SLS_ACCESS_KEY_ID}" \
-    --build-arg "SLS_SECRET_ACCESS_KEY=${SLS_SECRET_ACCESS_KEY}" .
+    --build-arg "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" .
 else
   docker build \
     -f Dockerfile-test \
     --tag cloud-template-deploy \
     --build-arg "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
     --build-arg "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
-    --build-arg "SLS_ACCESS_KEY_ID=${SLS_ACCESS_KEY_ID}" \
-    --build-arg "SLS_SECRET_ACCESS_KEY=${SLS_SECRET_ACCESS_KEY}" \
     --build-arg "BRANCH=${BUILDKITE_BRANCH}" .
 fi
 

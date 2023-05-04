@@ -12,7 +12,10 @@ steps:
     artifact_paths:
       - "/Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml"
 
-  - wait
+  - wait: ~
+    continue_on_failure: false
+
+  - block: ':computer: Deploy stack?'
 
   - name: ':desert_island: Deploy'
     commands:
@@ -20,6 +23,7 @@ steps:
       - 'buildkite-agent artifact download "Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml" .'
       - "cp Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml ."
       - "npm install"
+      - "aws ecr get-login-password | docker login --username AWS --password-stdin 572131386763.dkr.ecr.ap-southeast-2.amazonaws.com"
       - 'sls deploy'
     agents:
       queue: default

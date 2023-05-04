@@ -22,7 +22,7 @@ module Controllers
       event['body'] = '' if event['body'].nil?
       @body = JSON.parse(event['body']) unless event['body'].strip.empty?
       @start = Time.now
-      @fullname_processor = Processors::FullnameProcessor.new(event, context, @body)
+      @fullname_processor = Processors::FullnameProcessor.new(event, context, @body, @path_parameters, @model)
     end
 
     def get_by_id # rubocop: disable Naming/AccessorMethodName
@@ -72,7 +72,7 @@ module Controllers
       @validation.validate_post
 
       # run processor
-      @fullname_processor.process
+      @fullname_processor.process('post')
 
       # run model
       res = @model.post(@body)
@@ -94,13 +94,19 @@ module Controllers
       rec_log
 
       # validate
+      @validation.validate_put
 
-      # run processors - add a fullname
+      # run processors
+      @fullname_processor.process('put')
 
       # run model
-      model.create({ test: 'value' })
+      res = @model.update(@path_parameters['id'], @body)
 
-      Responses._200({ status: 'Ok' })
+      Responses._200({ personId: @path_parameters['id'], updateStatus: res.positive? ? 'success' : 'record not updated' })
+    rescue Exceptions::InvalidParametersError => e
+      Responses._400({ message: e.message })
+    rescue Exceptions::SchemaError => e
+      Responses._400({ message: JSON.parse(e.message, { symbolize_names: true }) })
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
     ensure
