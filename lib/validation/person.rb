@@ -30,5 +30,9 @@ module Validation
       raise Exceptions::InvalidParametersError, 'Parameters missing: ID' if @path_parameters['id'].nil?
       raise Exceptions::InvalidParametersError, 'Parameters missing: No body' if @body.nil?
     end
+
+    def validate_delete
+      raise Exceptions::InvalidParametersError, 'Parameters missing: ID' if @path_parameters['id'].nil?
+    end
   end
 end

@@ -10,14 +10,18 @@ RSpec.shared_context 'controllers' do
     {
       validate_get_by_id: 'validated by id',
       validate_get: 'validated get',
-      validate_post: 'validated post'
+      validate_post: 'validated post',
+      validate_put: 'validated put',
+      validate_delete: 'validated delete'
     }
   end
   let(:model_methods) do
     {
       find_by_id: 'found by id',
       find: 'found',
-      post: 'posted'
+      post: 'posted',
+      update: 1,
+      delete: 'deleted'
     }
   end
   let(:processor_methods) do
