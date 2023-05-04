@@ -42,6 +42,7 @@ module Validation
 
     def self.type_valid?(hash, schema, key)
       return false if hash[key].nil?
+
       schema.dig(key, :type) && !hash[key.to_s].is_a?(schema.dig(key, :type))
     end
 

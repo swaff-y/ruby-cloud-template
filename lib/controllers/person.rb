@@ -100,9 +100,9 @@ module Controllers
       @fullname_processor.process('put')
 
       # run model
-      res = @model.update(@body, @path_parameters['id'])
+      res = @model.update(@path_parameters['id'], @body)
 
-      Responses._200({ personId: @path_parameters['id'], updateStatus: res > 0 ? 'success' : 'record not updated' })
+      Responses._200({ personId: @path_parameters['id'], updateStatus: res.positive? ? 'success' : 'record not updated' })
     rescue Exceptions::InvalidParametersError => e
       Responses._400({ message: e.message })
     rescue Exceptions::SchemaError => e

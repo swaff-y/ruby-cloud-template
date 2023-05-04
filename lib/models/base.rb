@@ -74,13 +74,13 @@ module Models
       raise Exceptions::RecordNotCreatedError, 'Record could not be created'
     end
 
-    def update(hash = nil, id)
+    def update(id, hash = nil)
       return unless valid_hash?(hash)
 
       check_collection
       hash = hash_schema(hash, 'put')
 
-      res = @collection.update_one({ _id: BSON::ObjectId(id)}, :"$set" => hash)
+      res = @collection.update_one({ _id: BSON::ObjectId(id) }, :'$set' => hash) # rubocop: disable Style/HashSyntax
       return res.modified_count if res.n.positive?
 
       raise Exceptions::RecordNotCreatedError, 'Record could not be updated'
