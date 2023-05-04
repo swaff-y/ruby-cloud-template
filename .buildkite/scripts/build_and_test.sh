@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ "$BUILDKITE_BRANCH" == "main"  ]
 then
   docker build \
