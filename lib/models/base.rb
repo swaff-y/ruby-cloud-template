@@ -29,7 +29,9 @@ module Models
 
       case type
       when 'post'
-        Validation::SchemaValidation.validate_hash_on_schema(hash, schema, self)
+        Validation::SchemaValidation.validate_hash_on_schema(hash, schema, self, 'post')
+      when 'put'
+        Validation::SchemaValidation.validate_hash_on_schema(hash, schema, self, 'put')
       when 'find'
         Validation::SchemaValidation.validate_values_on_schema(hash, schema)
       end
@@ -72,13 +74,19 @@ module Models
       raise Exceptions::RecordNotCreatedError, 'Record could not be created'
     end
 
-    def delete(hash = nil)
+    def update(hash = nil, id)
       return unless valid_hash?(hash)
 
-      hash
+      check_collection
+      hash = hash_schema(hash, 'put')
+
+      res = @collection.update_one({ _id: BSON::ObjectId(id)}, :"$set" => hash)
+      return res.modified_count if res.n.positive?
+
+      raise Exceptions::RecordNotCreatedError, 'Record could not be updated'
     end
 
-    def update(hash = nil)
+    def delete(hash = nil)
       return unless valid_hash?(hash)
 
       hash

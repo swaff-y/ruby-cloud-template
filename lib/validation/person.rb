@@ -25,5 +25,10 @@ module Validation
     def validate_post
       raise Exceptions::InvalidParametersError, 'Parameters missing: No body' if @body.nil?
     end
+
+    def validate_put
+      raise Exceptions::InvalidParametersError, 'Parameters missing: ID' if @path_parameters['id'].nil?
+      raise Exceptions::InvalidParametersError, 'Parameters missing: No body' if @body.nil?
+    end
   end
 end
