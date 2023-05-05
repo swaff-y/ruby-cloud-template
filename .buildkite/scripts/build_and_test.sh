@@ -8,14 +8,16 @@ then
     -f Dockerfile-test \
     --tag cloud-template-deploy \
     --build-arg "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
-    --build-arg "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" .
+    --build-arg "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
+    --build-arg "AWS_ACCOUNT=${AWS_ACCOUNT}" .
 else
   docker build \
     -f Dockerfile-test \
     --tag cloud-template-deploy \
     --build-arg "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
     --build-arg "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
-    --build-arg "BRANCH=${BUILDKITE_BRANCH}" .
+    --build-arg "BRANCH=${BUILDKITE_BRANCH}" \
+    --build-arg "AWS_ACCOUNT=${AWS_ACCOUNT}" .
 fi
 
 docker run \

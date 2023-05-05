@@ -6,6 +6,7 @@ steps:
       - "mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}"
       - "mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}"
       - "cp ./serverless.yml /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml"
+      - "export AWS_ACCOUNT=$(aws sts get-caller-identity | jq -r '.Account')"
       - "sh .buildkite/scripts/build_and_test.sh"
     agents:
       queue: default
