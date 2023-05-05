@@ -12,7 +12,10 @@ provider:
   stage: $STAGE
   region: $REGION
   iamRoleStatements:
-    - $ROLES
+    - Effect: 'Allow'
+      Action:
+        - 'secretsmanager:GetSecretValue'
+      Resource: 'arn:aws:secretsmanager:ap-southeast-2:572131386763:secret:Cloud-template-db-connection-string-*'
 
 plugins:
   - serverless-add-api-key
@@ -20,7 +23,7 @@ plugins:
 custom:
   databaseUrl: $DATABASE_URL
   apiKeys:
-    - name: $KEY
+    - name: devKey
 
 functions:
   api_status:

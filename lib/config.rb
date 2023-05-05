@@ -33,7 +33,7 @@ class Config
       {
         'Effect' => 'Allow',
         'Action' => ['secretsmanager:GetSecretValue'],
-        'Recource' => "arn:aws:secretsmanager:#{region}:#{account}:secret:Cloud-template-db-connection-string-*"
+        'Resource' => "arn:aws:secretsmanager:#{region}:#{account}:secret:Cloud-template-db-connection-string-*"
       }
     ]
   end
