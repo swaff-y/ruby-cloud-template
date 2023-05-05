@@ -24,7 +24,7 @@ class Config
 
   def self.account
     ENV.fetch('AWS_ACCOUNT')
-  rescue
+  rescue # rubocop: disable Style/RescueStandardError
     JSON.parse(`aws sts get-caller-identity`)['Account']
   end
 
