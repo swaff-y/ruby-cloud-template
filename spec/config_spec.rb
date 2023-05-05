@@ -98,7 +98,10 @@ RSpec.describe Config do
   end
 
   describe '.mongo_url' do
-    before { allow(ENV).to receive(:fetch).and_return('http://a-fake-url.com') }
+    before do
+      allow(ENV).to receive(:fetch).and_return('http://a-fake-url.com')
+      allow(Aws::SecretsManager::Client).to receive(:new).and_return(double(:aws, get_secret_value: double(:get_value, secret_string: "{\"DB_CONNECTION_STRING\":\"http://fake.com\"}") ))
+    end
 
     it { expect(klass.mongo_url).to eq 'http://a-fake-url.com'}
   end

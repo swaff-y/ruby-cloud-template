@@ -12,7 +12,7 @@ module Tasks
 
     def process
       cmd = "aws ecr get-login-password | docker login --username AWS --password-stdin #{@account}.dkr.ecr.ap-southeast-2.amazonaws.com"
-      %x( cmd )
+      `#{cmd}`
     rescue StandardError => e
       Config.logger('error', e.message)
       exit(1)
