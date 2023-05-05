@@ -26,7 +26,7 @@ class Config
   end
 
   def self.region
-    ENV.fetch("REGION", 'ap-southeast-2')
+    ENV.fetch('REGION', 'ap-southeast-2')
   end
 
   def self.application
