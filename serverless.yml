@@ -15,7 +15,7 @@ provider:
     - Effect: 'Allow'
       Action:
         - 'secretsmanager:GetSecretValue'
-      Resource: 'arn:aws:secretsmanager:ap-southeast-2:572131386763:secret:Cloud-template-db-connection-string-*'
+      Resource: $RESOURCE
 
 plugins:
   - serverless-add-api-key
@@ -23,7 +23,7 @@ plugins:
 custom:
   databaseUrl: $DATABASE_URL
   apiKeys:
-    - name: devKey
+    - name: $KEY
 
 functions:
   api_status:
