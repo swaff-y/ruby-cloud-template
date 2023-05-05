@@ -4,6 +4,7 @@ require 'mongo'
 require 'logger'
 require 'yaml'
 require 'aws-sdk-secretsmanager'
+require 'json'
 
 # Application config
 class Config
@@ -19,6 +20,12 @@ class Config
     when 'error'
       error_log.error(message)
     end
+  end
+
+  def self.account
+    identity = `aws sts get-caller-identity`
+
+    JSON.parse(identity)['Account']
   end
 
   def self.branch_name
