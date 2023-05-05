@@ -23,7 +23,9 @@ class Config
   end
 
   def self.account
-    ENV.fetch('AWS_ACCOUNT', JSON.parse(`aws sts get-caller-identity`)['Account'])
+    ENV.fetch('AWS_ACCOUNT')
+  rescue
+    JSON.parse(`aws sts get-caller-identity`)['Account']
   end
 
   def self.iam_roles
