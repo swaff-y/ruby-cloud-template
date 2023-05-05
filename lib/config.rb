@@ -21,6 +21,14 @@ class Config
     end
   end
 
+  def self.branch_name
+    ENV.fetch('BRANCH', 'no-branch')
+  end
+
+  def self.region
+    ENV.fetch("REGION", 'ap-southeast-2')
+  end
+
   def self.application
     'cloud_template'
   end
@@ -42,9 +50,7 @@ class Config
   end
 
   def self.stage
-    ENV.fetch('STAGE')
-  rescue KeyError
-    'local'
+    ENV.fetch('STAGE', 'local')
   end
 
   def self.mongo_client
@@ -52,9 +58,7 @@ class Config
   end
 
   def self.mongo_url
-    ENV.fetch('DB_CONNECTION_STRING')
-  rescue KeyError
-    db_connection_string
+    ENV.fetch('DB_CONNECTION_STRING', db_connection_string)
   end
 
   def self.correct_coverage?(hash)
@@ -66,7 +70,7 @@ class Config
   end
 
   def self.db_connection_string
-    client = Aws::SecretsManager::Client.new(region: 'ap-southeast-2')
+    client = Aws::SecretsManager::Client.new(region: region)
 
     get_secret_value_response = client.get_secret_value(secret_id: 'Cloud-template-db-connection-string')
     JSON.parse(get_secret_value_response.secret_string)['DB_CONNECTION_STRING']
