@@ -4,6 +4,7 @@ require 'mongo'
 require 'logger'
 require 'yaml'
 require 'aws-sdk-secretsmanager'
+require 'json'
 
 # Application config
 class Config
@@ -19,6 +20,38 @@ class Config
     when 'error'
       error_log.error(message)
     end
+  end
+
+  def self.account
+    ENV.fetch('AWS_ACCOUNT')
+  rescue # rubocop: disable Style/RescueStandardError
+    JSON.parse(`aws sts get-caller-identity`)['Account']
+  end
+
+  def self.iam_roles
+    [
+      {
+        'Effect' => 'Allow',
+        'Action' => ['secretsmanager:GetSecretValue'],
+        'Resource' => "arn:aws:secretsmanager:#{region}:#{account}:secret:Cloud-template-db-connection-string-*"
+      }
+    ]
+  end
+
+  def self.api_keys
+    [
+      {
+        'name' => prod? ? 'prodKey' : 'devKey'
+      }
+    ]
+  end
+
+  def self.branch_name
+    ENV.fetch('BRANCH', 'no-branch')
+  end
+
+  def self.region
+    ENV.fetch('REGION', 'ap-southeast-2')
   end
 
   def self.application
@@ -42,9 +75,7 @@ class Config
   end
 
   def self.stage
-    ENV.fetch('STAGE')
-  rescue KeyError
-    'local'
+    ENV.fetch('STAGE', 'local')
   end
 
   def self.mongo_client
@@ -52,9 +83,7 @@ class Config
   end
 
   def self.mongo_url
-    ENV.fetch('DB_CONNECTION_STRING')
-  rescue KeyError
-    db_connection_string
+    ENV.fetch('DB_CONNECTION_STRING', db_connection_string)
   end
 
   def self.correct_coverage?(hash)
@@ -66,7 +95,7 @@ class Config
   end
 
   def self.db_connection_string
-    client = Aws::SecretsManager::Client.new(region: 'ap-southeast-2')
+    client = Aws::SecretsManager::Client.new(region: region)
 
     get_secret_value_response = client.get_secret_value(secret_id: 'Cloud-template-db-connection-string')
     JSON.parse(get_secret_value_response.secret_string)['DB_CONNECTION_STRING']

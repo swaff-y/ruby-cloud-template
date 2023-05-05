@@ -6,6 +6,7 @@ steps:
       - "mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}"
       - "mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}"
       - "cp ./serverless.yml /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml"
+      - "export AWS_ACCOUNT=$(aws sts get-caller-identity | jq -r '.Account')"
       - "sh .buildkite/scripts/build_and_test.sh"
     agents:
       queue: default
@@ -23,7 +24,8 @@ steps:
       - 'buildkite-agent artifact download "Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml" .'
       - "cp Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml ."
       - "npm install"
-      - "aws ecr get-login-password | docker login --username AWS --password-stdin 572131386763.dkr.ecr.ap-southeast-2.amazonaws.com"
+      - "bundle install --without development test"
+      - "bundle exec rake aws_login"
       - 'sls deploy'
     agents:
       queue: default
