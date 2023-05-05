@@ -20,8 +20,10 @@ module Tasks
       @serverless_yml_hash['service'] = Config.application_serverless
       @serverless_yml_hash['provider']['stage'] = "dev-#{Config.branch_name}" if type == 'dev' && @serverless_yml_hash['provider']
       @serverless_yml_hash['provider']['stage'] = 'prod' if type == 'prod' && @serverless_yml_hash['provider']
-      @serverless_yml_hash['provider']['region'] = Config.region unless database_url.nil? && !@serverless_yml_hash['custom']
+      @serverless_yml_hash['provider']['region'] = Config.region if @serverless_yml_hash['provider']
+      @serverless_yml_hash['provider']['iamRoleStatements'] = Config.iam_roles if @serverless_yml_hash['provider']
       @serverless_yml_hash['custom']['databaseUrl'] = database_url unless database_url.nil? && !@serverless_yml_hash['custom']
+      @serverless_yml_hash['custom']['apiKeys'] = Config.api_keys if @serverless_yml_hash['custom']
 
       File.write('serverless.yml', @serverless_yml_hash.to_yaml)
     rescue StandardError => e

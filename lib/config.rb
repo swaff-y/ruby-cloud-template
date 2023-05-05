@@ -28,6 +28,24 @@ class Config
     JSON.parse(identity)['Account']
   end
 
+  def self.iam_roles
+    [
+      {
+        'Effect' => 'Allow',
+        'Action' => ['secretsmanager:GetSecretValue'],
+        'Recource' => "arn:aws:secretsmanager:#{region}:#{account}:secret:Cloud-template-db-connection-string-*"
+      }
+    ]
+  end
+
+  def self.api_keys
+    [
+      {
+        'name' => prod? ? 'prodKey' : 'devKey'
+      }
+    ]
+  end
+
   def self.branch_name
     ENV.fetch('BRANCH', 'no-branch')
   end
