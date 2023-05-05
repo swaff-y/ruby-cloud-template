@@ -2,6 +2,8 @@
 
 set -e
 
+echo $AWS_ACCOUNT
+
 if [ "$BUILDKITE_BRANCH" == "main"  ]
 then
   docker build \
