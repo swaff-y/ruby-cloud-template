@@ -34,8 +34,12 @@ module Controllers
       # run model
       res = @model.find_by_id(@path_parameters['id'])
 
-      Responses._200(res)
-    rescue Exceptions::InvalidParametersError => e
+      return Responses._200(res) unless res.nil?
+
+      raise Exceptions::RecordNotCreatedError, 'Error getting record'
+    rescue Exceptions::RecordNotCreatedError => e
+      Responses._400({ message: e.message })
+    rescue Exceptions::InvalidParametersError => e # rubocop: disable Lint/DuplicateBranch
       Responses._400({ message: e.message })
     rescue BSON::ObjectId::Invalid
       Responses._400({ message: 'Invalid person ID' })
@@ -117,11 +121,18 @@ module Controllers
       rec_log
 
       # validate
+      @validation.validate_delete
 
       # run model
-      @model.delete({ test: 'value' })
+      res = @model.delete(@path_parameters['id'])
 
-      Responses._200({ status: 'Ok' })
+      Responses._200({ personId: @path_parameters['id'], updateStatus: res.positive? ? 'success' : 'record not deleted' })
+    rescue Exceptions::RecordNotCreatedError => e
+      Responses._400({ message: e.message })
+    rescue BSON::ObjectId::Invalid
+      Responses._400({ message: 'Invalid person ID' })
+    rescue Exceptions::InvalidParametersError => e # rubocop: disable Lint/DuplicateBranch
+      Responses._400({ message: e.message })
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
     ensure

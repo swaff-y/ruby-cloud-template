@@ -93,3 +93,16 @@ functions:
           method: put
           cors: true
           private: true
+  delete_person:
+    image:
+      name: cloud-template-lambda
+      command:
+        - lib/lambda/handler.delete_person
+      entryPoint:
+        - '/lambda-entrypoint.sh'
+    events:
+      - http:
+          path: /person/{id}
+          method: delete
+          cors: true
+          private: true
