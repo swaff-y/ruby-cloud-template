@@ -76,6 +76,18 @@ RSpec.describe Config do
     end
   end
 
+  describe '.dev?' do
+    context 'when stage is dev' do
+      before { allow(klass).to receive(:stage).and_return('dev') }
+      it { expect(klass.dev?).to be true }
+    end
+
+    context 'when stage is not dev' do
+      before { allow(klass).to receive(:stage).and_return('local') }
+      it { expect(klass.prod?).to be_nil }
+    end
+  end
+
   describe '.stage' do
     context 'when stage env is nil' do
       before { allow(ENV).to receive(:fetch).and_return(nil) }
@@ -104,6 +116,22 @@ RSpec.describe Config do
     end
 
     it { expect(klass.mongo_url).to eq 'http://a-fake-url.com'}
+  end
+
+  describe '.branch_name' do
+    before do
+      allow(ENV).to receive(:fetch).and_return('branch')
+    end
+
+    it { expect(klass.branch_name).to eq 'branch'}
+  end
+
+  describe '.application' do
+    it { expect(klass.application).to eq 'cloud_template'}
+  end
+
+  describe '.application_serverless' do
+    it { expect(klass.application_serverless).to eq 'cloud-template'}
   end
 
 end
