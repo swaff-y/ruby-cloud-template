@@ -19,7 +19,7 @@ steps:
   - block: ':computer: Deploy stack?'
 
   - name: ':desert_island: Deploy'
-    branch: '!main'
+    branches: '!main'
     env:
       STAGE: dev
     commands:
@@ -34,7 +34,7 @@ steps:
       queue: default
 
   - name: ':desert_island: Deploy'
-    branch: 'main'
+    branches: 'main'
     env:
       STAGE: prod
     commands:
