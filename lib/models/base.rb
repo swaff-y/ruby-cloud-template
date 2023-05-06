@@ -83,13 +83,19 @@ module Models
       res = @collection.update_one({ _id: BSON::ObjectId(id) }, :'$set' => hash) # rubocop: disable Style/HashSyntax
       return res.modified_count if res.n.positive?
 
-      raise Exceptions::RecordNotCreatedError, 'Record could not be updated'
+      raise Exceptions::RecordNotCreatedError, 'Error updating record'
     end
 
-    def delete(hash = nil)
-      return unless valid_hash?(hash)
+    def delete(id = nil)
+      return if id.nil?
 
-      hash
+      check_collection
+
+      res = @collection.delete_one(_id: BSON::ObjectId(id))
+
+      return res.deleted_count if res.n.positive?
+
+      raise Exceptions::RecordNotCreatedError, 'Error deleting record'
     end
   end
 end

@@ -34,7 +34,11 @@ module Controllers
       # run model
       res = @model.find_by_id(@path_parameters['id'])
 
-      Responses._200(res)
+      return Responses._200(res) unless res.nil?
+
+      raise Exceptions::RecordNotCreatedError, 'Error getting record'
+    rescue Exceptions::RecordNotCreatedError => e
+      Responses._400({ message: e.message })
     rescue Exceptions::InvalidParametersError => e
       Responses._400({ message: e.message })
     rescue BSON::ObjectId::Invalid
@@ -117,11 +121,18 @@ module Controllers
       rec_log
 
       # validate
+      @validation.validate_delete
 
       # run model
-      @model.delete({ test: 'value' })
+      res = @model.delete(@path_parameters['id'])
 
-      Responses._200({ status: 'Ok' })
+      Responses._200({ personId: @path_parameters['id'], updateStatus: res.positive? ? 'success' : 'record not deleted' })
+    rescue Exceptions::RecordNotCreatedError => e
+      Responses._400({ message: e.message })
+    rescue Exceptions::InvalidParametersError => e
+      Responses._400({ message: e.message })
+    rescue BSON::ObjectId::Invalid
+      Responses._400({ message: 'Invalid person ID' })
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
     ensure
