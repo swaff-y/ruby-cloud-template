@@ -11,6 +11,8 @@ provider:
   profile: default
   stage: $STAGE
   region: $REGION
+  environment:
+    STAGE: $STAGE
   iamRoleStatements:
     - Effect: 'Allow'
       Action:
