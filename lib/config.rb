@@ -39,8 +39,6 @@ class Config
   end
 
   def self.api_keys
-    puts "stage: #{stage}"
-    puts "prod?: #{prod?}"
     key = 'devKey'
     key = 'prodKey' if prod?
     [
