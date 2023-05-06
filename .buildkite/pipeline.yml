@@ -19,6 +19,24 @@ steps:
   - block: ':computer: Deploy stack?'
 
   - name: ':desert_island: Deploy'
+    branch: '!main'
+    env:
+      STAGE: dev
+    commands:
+      - "rm serverless.yml"
+      - 'buildkite-agent artifact download "Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml" .'
+      - "cp Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml ."
+      - "npm install"
+      - "bundle install --without development test"
+      - "bundle exec rake aws_login"
+      - 'sls deploy'
+    agents:
+      queue: default
+
+  - name: ':desert_island: Deploy'
+    branch: 'main'
+    env:
+      STAGE: prod
     commands:
       - "rm serverless.yml"
       - 'buildkite-agent artifact download "Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml" .'
