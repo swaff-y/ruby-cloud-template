@@ -39,9 +39,11 @@ class Config
   end
 
   def self.api_keys
+    key = 'devKey'
+    key = 'prodKey' if prod?
     [
       {
-        'name' => prod? ? 'prodKey' : 'devKey'
+        'name' => key
       }
     ]
   end
