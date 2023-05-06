@@ -21,7 +21,7 @@ module Controllers
       # Validate db connection
       db_name = @validation.process
 
-      Responses._200({ status: 'Ok', database: db_name })
+      Responses._200({ status: 'Ok', database: db_name, stage: Config.stage })
     rescue Exceptions::ConnectionError => e
       Responses._500({ message: e.message, backtrace: nil })
     rescue StandardError => e
