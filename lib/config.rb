@@ -75,7 +75,9 @@ class Config
   end
 
   def self.stage
-    ENV.fetch('STAGE', 'local')
+    ENV.fetch('STAGE')
+  rescue  # rubocop: disable Style/RescueStandardError
+    'local'
   end
 
   def self.mongo_client
