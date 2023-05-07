@@ -11,7 +11,7 @@ module Tasks
     def initialize
       @serverless_yml_hash = YAML.parse(File.read('serverless.yml')).to_ruby
     rescue StandardError => e
-      Config.logger('error', "int #{e.message} #{pwd} #{ls}")
+      Config.logger('error', "deploy #{e.message}")
       exit(1)
     end
 

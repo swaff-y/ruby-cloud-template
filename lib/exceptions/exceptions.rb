@@ -13,4 +13,6 @@ module Exceptions
   class CoverageError < StandardError; end
   # Error class for connection errors
   class ConnectionError < StandardError; end
+  # Error class for postman errors
+  class PostmanError < StandardError; end
 end
