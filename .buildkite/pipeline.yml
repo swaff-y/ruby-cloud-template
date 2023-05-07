@@ -40,6 +40,7 @@ steps:
       - "rm postman_collection.json"
       - 'buildkite-agent artifact download "deploy_result" .'
       - 'buildkite-agent artifact download "Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/postman_collection.json" .'
+      - "bundle install --without development test"
       - 'sh .buildkite/scripts/postman.sh'
     agents:
       queue: default
