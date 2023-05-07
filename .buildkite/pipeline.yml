@@ -4,12 +4,14 @@ steps:
       - "mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}"
       - "mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}"
       - "cp ./serverless.yml /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml"
+      - "cp ./postman_collection.json /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/postman_collection.json"
       - "export AWS_ACCOUNT=$(aws sts get-caller-identity | jq -r '.Account')"
       - "sh .buildkite/scripts/build_and_test.sh"
     agents:
       queue: default
     artifact_paths:
       - "/Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml"
+      - "/Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/postman_collection.json"
 
   - wait: ~
     continue_on_failure: false
@@ -33,7 +35,9 @@ steps:
 
   - name: ':postman: postman'
     commands:
+      - "rm postman_collection.json"
       - 'buildkite-agent artifact download "deploy_result" .'
+      - 'buildkite-agent artifact download "Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/postman_collection.json" .'
       - 'sh .buildkite/scripts/postman.sh'
     agents:
       queue: default
