@@ -50,7 +50,7 @@ module Tasks
       end
 
       @postman_json_hash['variable'].each do |val|
-        val['value'] = Config.prod? ? 'prod' : 'dev-#{Config.branch_name}' if val['key'] == 'stage'
+        val['value'] = Config.prod? ? 'prod' : "dev-#{Config.branch_name}" if val['key'] == 'stage'
       end
 
       File.write('postman_collection.json', @postman_json_hash.to_json)
@@ -58,7 +58,7 @@ module Tasks
 
     def process_unique_id
       @postman_json_hash['variable'].each do |val|
-        val['value'] = ENV['UNIQUE_ID'] if val['key'] == 'unique_id'
+        val['value'] = ENV.fetch('UNIQUE_ID') if val['key'] == 'unique_id'
       end
 
       File.write('postman_collection.json', @postman_json_hash.to_json)
