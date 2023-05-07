@@ -16,7 +16,7 @@ ENV AWS_ACCOUNT ${AWS_ACCOUNT}
 RUN mkdir -p /app
 WORKDIR /app
 
-COPY Gemfile Gemfile.lock Rakefile .rubocop.yml .rspec serverless.yml ./
+COPY Gemfile Gemfile.lock Rakefile .rubocop.yml .rspec serverless.yml postman_collection.json ./
 RUN bundle install
 
 COPY lib/ lib/
