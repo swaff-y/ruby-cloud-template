@@ -33,6 +33,8 @@ steps:
     artifact_paths:
       - "deploy_result"
 
+  - wait
+
   - name: ':postman: postman'
     commands:
       - "rm postman_collection.json"
