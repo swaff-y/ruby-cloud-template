@@ -41,8 +41,7 @@ module Tasks
     end
 
     def process_postman
-      key = ENV.fetch('DEV_KEY')
-      key = ENV.fetch('PROD_KEY') if Config.prod?
+      key = ENV.fetch('API_KEY')
       raise StandardError, 'No api key variables set' if key.nil?
 
       @postman_json_hash.dig('auth', 'apikey').each do |val|

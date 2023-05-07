@@ -12,7 +12,8 @@ then
     --build-arg "STAGE=prod" \
     --build-arg "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
     --build-arg "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
-    --build-arg "AWS_ACCOUNT=${AWS_ACCOUNT}" .
+    --build-arg "AWS_ACCOUNT=${AWS_ACCOUNT}" \
+    --build-arg "API_KEY=${PROD_KEY}" .
 else
   docker build \
     -f Dockerfile-test \
@@ -21,7 +22,8 @@ else
     --build-arg "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
     --build-arg "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
     --build-arg "BRANCH=${BUILDKITE_BRANCH}" \
-    --build-arg "AWS_ACCOUNT=${AWS_ACCOUNT}" .
+    --build-arg "AWS_ACCOUNT=${AWS_ACCOUNT}" \
+    --build-arg "API_KEY=${DEV_KEY}" .
 fi
 
 docker run \
