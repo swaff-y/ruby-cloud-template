@@ -1,6 +1,8 @@
 #!/bin/bash
 
 set -e
+
+ls -la
       
 export UNIQUE_ID=$(cat deploy_result | grep -m 1 execute-api | sed 's|^.*\/\/\(.*\)\.ex.*$|\1|g')
 
