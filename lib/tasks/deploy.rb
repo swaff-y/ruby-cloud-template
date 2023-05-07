@@ -10,9 +10,9 @@ module Tasks
   # base model class
   class Deploy
     def initialize
-    rescue StandardError => e
       @serverless_yml_hash = YAML.parse(File.read('serverless.yml')).to_ruby
       @postman_json_hash = JSON.parse(File.read('postman_collection.json'))
+    rescue StandardError => e
       Config.logger('error', "deploy #{e.message}")
       exit(1)
     end
@@ -27,8 +27,6 @@ module Tasks
 
     def process_serverless(type)
       database_url = Config.db_connection_string
-      puts "sls -> #{@serverless_yml_hash}"
-      puts `cat serverless.yml`
       @serverless_yml_hash['service'] = Config.application_serverless
       @serverless_yml_hash['provider']['stage'] = "dev-#{Config.branch_name}" if type == 'dev' && @serverless_yml_hash['provider']
       @serverless_yml_hash['provider']['stage'] = 'prod' if type == 'prod' && @serverless_yml_hash['provider']
