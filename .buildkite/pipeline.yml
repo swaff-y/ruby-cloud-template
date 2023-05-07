@@ -26,9 +26,25 @@ steps:
       - "npm install"
       - "bundle install --without development test"
       - "bundle exec rake aws_login"
-      - 'sls deploy'
+      - 'sls deploy > deploy_result'
+      - 'cat deploy_result'
     agents:
       queue: default
+    artifact_paths:
+      - "deploy_result"
+
+  - name: ':postman: postman'
+    commands:
+      - 'buildkite-agent artifact download "deploy_result" .'
+      - 'export UNIQUE_ID=$(cat deploy_result | grep -m 1 execute-api | sed 's|^.*\/\/\(.*\)\.ex.*$|\1|g')'
+      - 'bundle exec rake set_unique_id'
+      - 'postman collection run postman_collection.json > postman_result'
+      - 'cat postman_result'
+      - 'bundle exec rake postman'
+    agents:
+      queue: default
+    artifact_paths:
+      - "postman_result"
 
   - wait
 

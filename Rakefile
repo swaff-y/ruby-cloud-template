@@ -34,6 +34,11 @@ task :aws_login do
   task.process
 end
 
+task :set_unique_id do
+  task = Tasks::Deploy.new
+  task.process_unique_id
+end
+
 task :postman do
   task = Tasks::Postman.new
   task.process
