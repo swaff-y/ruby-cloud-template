@@ -34,7 +34,7 @@ steps:
       queue: default
     artifact_paths:
       - "deploy_result"
-            - "/Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/postman_collection.json"
+      - "/Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/postman_collection.json"
 
   - wait
 
