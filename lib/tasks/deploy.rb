@@ -19,7 +19,7 @@ module Tasks
 
     def process(type)
       process_serverless(type)
-      process_postman(type)
+      process_postman
     rescue StandardError => e
       Config.logger('error', "Proc #{e.message} #{e.backtrace}")
       exit(1)
