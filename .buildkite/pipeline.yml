@@ -1,17 +1,12 @@
-
-
 steps:
   - label: ":package: Build, Package and run tests"
     commands:
-      - "mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}"
-      - "mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}"
-      - "cp ./serverless.yml /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml"
-      - "export AWS_ACCOUNT=$(aws sts get-caller-identity | jq -r '.Account')"
       - "sh .buildkite/scripts/build_and_test.sh"
     agents:
       queue: default
     artifact_paths:
       - "/Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml"
+      - "/Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/postman_collection.json"
 
   - wait: ~
     continue_on_failure: false
@@ -20,25 +15,30 @@ steps:
 
   - name: ':desert_island: Deploy'
     commands:
-      - "rm serverless.yml"
-      - 'buildkite-agent artifact download "Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml" .'
-      - "cp Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml ."
-      - "npm install"
-      - "bundle install --without development test"
-      - "bundle exec rake aws_login"
-      - 'sls deploy'
+      - "sh .buildkite/scripts/deploy.sh"
     agents:
       queue: default
+    artifact_paths:
+      - "deploy_result"
 
   - wait
+
+  - name: ':postman: postman'
+    commands:
+      - 'sh .buildkite/scripts/postman.sh'
+    agents:
+      queue: default
+    artifact_paths:
+      - "postman_result"
+
+  - wait: ~
+    continue_on_failure: true
 
   - block: ':hammer: Remove Stack'
 
   - name: ':package: Removing stack'
-    commands: 
-      - 'buildkite-agent artifact download "Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml" .'
-      - "cp Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml ."
-      - "npm install"
-      - 'sls remove'
+    commands:
+      - 'sh .buildkite/scripts/remove.sh'
+
     agents:
       queue: default

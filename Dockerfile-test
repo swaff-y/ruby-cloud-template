@@ -3,6 +3,7 @@ FROM swaffy/cloud-template-base
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
 ARG AWS_ACCOUNT
+ARG API_KEY
 ARG STAGE
 ARG BRANCH
 
@@ -10,13 +11,14 @@ ENV AWS_ACCESS_KEY_ID ${AWS_ACCESS_KEY_ID}
 ENV AWS_SECRET_ACCESS_KEY ${AWS_SECRET_ACCESS_KEY}
 ENV BRANCH ${BRANCH}
 ENV STAGE ${STAGE}
+ENV API_KEY ${API_KEY}
 
 ENV AWS_ACCOUNT ${AWS_ACCOUNT}
 
 RUN mkdir -p /app
 WORKDIR /app
 
-COPY Gemfile Gemfile.lock Rakefile .rubocop.yml .rspec serverless.yml ./
+COPY Gemfile Gemfile.lock Rakefile .rubocop.yml .rspec serverless.yml postman_collection.json ./
 RUN bundle install
 
 COPY lib/ lib/

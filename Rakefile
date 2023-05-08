@@ -6,6 +6,7 @@ require 'rspec/core/rake_task'
 require_relative 'lib/tasks/coverage'
 require_relative 'lib/tasks/deploy'
 require_relative 'lib/tasks/aws_login'
+require_relative 'lib/tasks/postman'
 
 RuboCop::RakeTask.new(:rubocop) do |t|
   t.options = %w[--display-cop-names --cache false --fail-level C lib]
@@ -30,6 +31,16 @@ end
 
 task :aws_login do
   task = Tasks::AwsLogin.new
+  task.process
+end
+
+task :set_unique_id do
+  task = Tasks::Deploy.new
+  task.process_unique_id
+end
+
+task :postman do
+  task = Tasks::Postman.new
   task.process
 end
 
