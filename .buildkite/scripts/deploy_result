@@ -1,0 +1,28 @@
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the migration guide at https://a.co/7PzMCcy
+(Use `node --trace-warnings ...` to show where the warning was created)
+ 
+Deploying cloud-template to stage dev-CT-21 (ap-southeast-2)
+ 
+✔ Service deployed to stack cloud-template-dev-CT-21 (168s)
+ 
+1 deprecation found: run 'serverless doctor' for more details
+AddApiKey: Api key devKey already exists, skipping creation.
+AddApiKey: Usage plan devKey-usage-plan already exists, skipping creation.
+AddApiKey: Usage plan devKey-usage-plan already has api key associated with it, skipping association.
+AddApiKey: Rest Api 4crc3u5fb5 already associated with the usage plan
+ 
+endpoints:
+  GET - https://cobq09hnk0.execute-api.ap-southeast-2.amazonaws.com/dev-CT-21/status
+  GET - https://cobq09hnk0.execute-api.ap-southeast-2.amazonaws.com/dev-CT-21/person/{id}
+  GET - https://cobq09hnk0.execute-api.ap-southeast-2.amazonaws.com/dev-CT-21/person
+  POST - https://cobq09hnk0.execute-api.ap-southeast-2.amazonaws.com/dev-CT-21/person
+  PUT - https://cobq09hnk0.execute-api.ap-southeast-2.amazonaws.com/dev-CT-21/person/{id}
+  DELETE - https://cobq09hnk0.execute-api.ap-southeast-2.amazonaws.com/dev-CT-21/person/{id}
+functions:
+  api_status: cloud-template-dev-CT-21-api_status
+  get_person_by_id: cloud-template-dev-CT-21-get_person_by_id
+  get_person: cloud-template-dev-CT-21-get_person
+  post_person: cloud-template-dev-CT-21-post_person
+  put_person: cloud-template-dev-CT-21-put_person
+  delete_person: cloud-template-dev-CT-21-delete_person
