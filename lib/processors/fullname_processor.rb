@@ -21,7 +21,7 @@ module Processors
       when 'put'
         @person = model.find_by_id(@path_params['id'])
 
-        @body['fullname'] = @body['firstname'] + @body['lastname'] if name_change?
+        @body['fullname'] = "#{@body['firstname']} #{@body['lastname']}" if name_change?
       end
     end
 

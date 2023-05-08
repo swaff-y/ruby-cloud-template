@@ -210,7 +210,7 @@
 							"",
 							"pm.test(\"Has a fullname\",function () {",
 							"    jsonData = pm.response.json();",
-							"    pm.expect(jsonData.data.fullname).to.eql(\"TesterDude\");",
+							"    pm.expect(jsonData.data.fullname).to.eql(\"Tester Dude\");",
 							"});",
 							"",
 							"pm.test(\"Has a weight\",function () {",
