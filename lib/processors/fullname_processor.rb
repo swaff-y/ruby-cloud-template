@@ -17,7 +17,7 @@ module Processors
     def process(type)
       case type
       when 'post'
-        @body['fullname'] = @body['firstname'] + @body['lastname']
+        @body['fullname'] = "#{@body['firstname']} #{@body['lastname']}"
       when 'put'
         @person = model.find_by_id(@path_params['id'])
 
