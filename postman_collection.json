@@ -33,8 +33,9 @@
 							"});",
 							"",
 							"pm.test(\"Has the correct stage\",function () {",
+							"    stage = pm.collectionVariables.get(\"stage\")",
 							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.data.stage).to.eql(\"prod\");",
+							"    pm.expect(jsonData.data.stage).to.eql(stage);",
 							"});"
 						],
 						"type": "text/javascript"
