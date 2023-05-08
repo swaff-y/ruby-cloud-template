@@ -16,4 +16,3 @@ fi
 bundle exec rake set_unique_id
 postman collection run postman_collection.json > postman_result
 cat postman_result
-bundle exec rake postman

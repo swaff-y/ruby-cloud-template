@@ -31,6 +31,14 @@ steps:
     artifact_paths:
       - "postman_result"
 
+  - wait
+
+  - name: ':postman: Parse Postman results'
+    commands:
+      - sh .buildkite/scripts/parse_tests.sh
+    agents:
+      queue: default
+
   - wait: ~
     continue_on_failure: true
 
