@@ -2,7 +2,11 @@
 
 set -e
 
-echo $AWS_ACCOUNT
+mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}
+mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}
+cp ./serverless.yml /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml
+cp ./postman_collection.json /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/postman_collection.json
+export AWS_ACCOUNT=$(aws sts get-caller-identity | jq -r '.Account')
 
 if [ "$BUILDKITE_BRANCH" == "main"  ]
 then

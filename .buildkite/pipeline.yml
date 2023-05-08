@@ -1,11 +1,6 @@
 steps:
   - label: ":package: Build, Package and run tests"
     commands:
-      - "mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}"
-      - "mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}"
-      - "cp ./serverless.yml /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml"
-      - "cp ./postman_collection.json /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/postman_collection.json"
-      - "export AWS_ACCOUNT=$(aws sts get-caller-identity | jq -r '.Account')"
       - "sh .buildkite/scripts/build_and_test.sh"
     agents:
       queue: default
@@ -20,14 +15,7 @@ steps:
 
   - name: ':desert_island: Deploy'
     commands:
-      - "rm serverless.yml"
-      - 'buildkite-agent artifact download "Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml" .'
-      - "cp Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml ."
-      - "npm install"
-      - "bundle install --without development test"
-      - "bundle exec rake aws_login"
-      - 'sls deploy > deploy_result'
-      - 'cat deploy_result'
+      - "sh .buildkite/scripts/deply.sh"
     agents:
       queue: default
     artifact_paths:
@@ -37,11 +25,6 @@ steps:
 
   - name: ':postman: postman'
     commands:
-      - "rm postman_collection.json"
-      - 'buildkite-agent artifact download "deploy_result" .'
-      - 'buildkite-agent artifact download "Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/postman_collection.json" .'
-      - "cp Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/postman_collection.json ."
-      - "bundle install --without development test"
       - 'sh .buildkite/scripts/postman.sh'
     agents:
       queue: default
@@ -54,10 +37,8 @@ steps:
   - block: ':hammer: Remove Stack'
 
   - name: ':package: Removing stack'
-    commands: 
-      - 'buildkite-agent artifact download "Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml" .'
-      - "cp Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml ."
-      - "npm install"
-      - 'sls remove'
+    commands:
+      - 'sh .buildkite/scripts/remove.sh'
+
     agents:
       queue: default
