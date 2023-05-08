@@ -15,7 +15,7 @@ steps:
 
   - name: ':desert_island: Deploy'
     commands:
-      - "sh .buildkite/scripts/deply.sh"
+      - "sh .buildkite/scripts/deploy.sh"
     agents:
       queue: default
     artifact_paths:
