@@ -33,7 +33,8 @@
 							"});",
 							"",
 							"pm.test(\"Has the correct stage\",function () {",
-							"    stage = pm.collectionVariables.get(\"stage\")",
+							"    stage = pm.collectionVariables.get(\"stage\");",
+							"    if(stage != 'prod') stage = 'dev';",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.data.stage).to.eql(stage);",
 							"});"

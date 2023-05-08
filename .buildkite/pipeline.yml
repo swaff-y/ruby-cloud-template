@@ -48,7 +48,8 @@ steps:
     artifact_paths:
       - "postman_result"
 
-  - wait
+  - wait: ~
+    continue_on_failure: true
 
   - block: ':hammer: Remove Stack'
 
