@@ -87,7 +87,7 @@ class Config
   end
 
   def self.mongo_url
-    ENV.fetch('DB_CONNECTION_STRING', db_connection_string)
+    ENV.fetch('DB_CONNECTION_STRING')
   end
 
   def self.correct_coverage?(hash)
