@@ -26,7 +26,7 @@ module Tasks
     end
 
     def process_serverless(type)
-      database_url = Config.db_connection_string
+      database_url = Config.mongo_url
       @serverless_yml_hash['service'] = Config.application_serverless
       @serverless_yml_hash['provider']['stage'] = "dev-#{Config.branch_name}" if type == 'dev' && @serverless_yml_hash['provider']
       @serverless_yml_hash['provider']['stage'] = 'prod' if type == 'prod' && @serverless_yml_hash['provider']
