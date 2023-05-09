@@ -32,8 +32,8 @@ module Tasks
       @serverless_yml_hash['provider']['stage'] = 'prod' if type == 'prod' && @serverless_yml_hash['provider']
       @serverless_yml_hash['provider']['environment']['STAGE'] = 'dev' if type == 'dev' && @serverless_yml_hash['provider']
       @serverless_yml_hash['provider']['environment']['STAGE'] = 'prod' if type == 'prod' && @serverless_yml_hash['provider']
+      @serverless_yml_hash['provider']['environment']['DB_CONNECTION_STRING'] = database_url unless database_url.nil? && !@serverless_yml_hash['provider']
       @serverless_yml_hash['provider']['region'] = Config.region if @serverless_yml_hash['provider']
-      @serverless_yml_hash['provider']['iamRoleStatements'] = Config.iam_roles if @serverless_yml_hash['provider']
       @serverless_yml_hash['custom']['databaseUrl'] = database_url unless database_url.nil? && !@serverless_yml_hash['custom']
       @serverless_yml_hash['custom']['apiKeys'] = Config.api_keys if @serverless_yml_hash['custom']
 
