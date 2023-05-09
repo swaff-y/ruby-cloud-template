@@ -6,10 +6,14 @@ mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}
 mkdir -p /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}
 cp ./serverless.yml /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml
 cp ./postman_collection.json /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/postman_collection.json
-export AWS_ACCOUNT=$(aws sts get-caller-identity | jq -r '.Account')
 
 if [ "$BUILDKITE_BRANCH" == "main"  ]
 then
+  export AWS_ACCOUNT=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsAccount)
+  export AWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId)
+  export AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
+  export AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
+  export PROD_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .ApiKey)
   docker build \
     -f Dockerfile-test \
     --tag cloud-template-deploy \
@@ -19,6 +23,11 @@ then
     --build-arg "AWS_ACCOUNT=${AWS_ACCOUNT}" \
     --build-arg "API_KEY=${PROD_KEY}" .
 else
+  export AWS_ACCOUNT=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsAccount)
+  export AWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId)
+  export AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
+  export AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
+  export DEV_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .ApiKey)
   docker build \
     -f Dockerfile-test \
     --tag cloud-template-deploy \
