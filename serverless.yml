@@ -13,11 +13,6 @@ provider:
   region: $REGION
   environment:
     STAGE: $STAGE
-  iamRoleStatements:
-    - Effect: 'Allow'
-      Action:
-        - 'secretsmanager:GetSecretValue'
-      Resource: $RESOURCE
 
 plugins:
   - serverless-add-api-key
