@@ -10,11 +10,11 @@ cp ./postman_collection.json /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NA
 if [ "$BUILDKITE_BRANCH" == "main"  ]
 then
   PARAMS=$(aws ssm get-parameter --name "cloud-temp-prod")
-  AWS_ACCOUNT=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .AwsAccount)
-  AWS_ACCESS_KEY_ID=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId)
-  AWS_SECRET_ACCESS_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
-  PROD_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .ApiKey)
-  DB_CONNECTION_STRING=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .dbConnectionString)
+  AWS_ACCOUNT=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .AwsAccount | jq -r .)
+  AWS_ACCESS_KEY_ID=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId | jq -r .)
+  AWS_SECRET_ACCESS_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey | jq -r .)
+  PROD_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .ApiKey | jq -r .)
+  DB_CONNECTION_STRING=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .dbConnectionString | jq -r .)
 
   docker build \
     -f Dockerfile-test \
@@ -27,11 +27,11 @@ then
     --build-arg "API_KEY=${PROD_KEY}" .
 else
   PARAMS=$(aws ssm get-parameter --name "cloud-temp-dev")
-  AWS_ACCOUNT=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .AwsAccount)
-  AWS_ACCESS_KEY_ID=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId)
-  AWS_SECRET_ACCESS_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
-  DEV_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .ApiKey)
-  DB_CONNECTION_STRING=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .dbConnectionString)
+  AWS_ACCOUNT=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .AwsAccount | jq -r .)
+  AWS_ACCESS_KEY_ID=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId | jq -r .)
+  AWS_SECRET_ACCESS_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey | jq -r .)
+  DEV_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .ApiKey | jq -r .)
+  DB_CONNECTION_STRING=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .dbConnectionString | jq -r .)
 
   docker build \
     -f Dockerfile-test \
