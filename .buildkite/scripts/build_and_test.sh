@@ -9,10 +9,11 @@ cp ./postman_collection.json /Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NA
 
 if [ "$BUILDKITE_BRANCH" == "main"  ]
 then
-  export AWS_ACCOUNT=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsAccount)
-  export AWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId)
-  export AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
-  export PROD_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .ApiKey)
+  PARAMS=$(aws ssm get-parameter --name "cloud-temp-prod")
+  export AWS_ACCOUNT=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .AwsAccount)
+  export AWS_ACCESS_KEY_ID=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId)
+  export AWS_SECRET_ACCESS_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
+  export PROD_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .ApiKey)
   docker build \
     -f Dockerfile-test \
     --tag cloud-template-deploy \
@@ -22,14 +23,11 @@ then
     --build-arg "AWS_ACCOUNT=${AWS_ACCOUNT}" \
     --build-arg "API_KEY=${PROD_KEY}" .
 else
-  export AWS_ACCOUNT=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsAccount)
-  echo $AWS_ACCOUNT
-  export AWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId)
-  echo $AWS_ACCESS_KEY_ID
-  export AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
-  echo $AWS_SECRET_ACCESS_KEY
-  export DEV_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .ApiKey)
-  echo $DEV_KEY
+  PARAMS=$(aws ssm get-parameter --name "cloud-temp-dev")
+  export AWS_ACCOUNT=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .AwsAccount)
+  export AWS_ACCESS_KEY_ID=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId)
+  export AWS_SECRET_ACCESS_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
+  export DEV_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .ApiKey)
   docker build \
     -f Dockerfile-test \
     --tag cloud-template-deploy \
