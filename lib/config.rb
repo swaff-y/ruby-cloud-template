@@ -78,7 +78,7 @@ class Config
 
   def self.stage
     ENV.fetch('STAGE')
-  rescue  # rubocop: disable Style/RescueStandardError
+  rescue # rubocop: disable Style/RescueStandardError
     'local'
   end
 
