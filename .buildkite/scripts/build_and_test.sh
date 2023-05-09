@@ -14,6 +14,8 @@ then
   AWS_ACCESS_KEY_ID=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId)
   AWS_SECRET_ACCESS_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
   PROD_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .ApiKey)
+  DB_CONNECTION_STRING=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .dbConnectionString)
+
   docker build \
     -f Dockerfile-test \
     --tag cloud-template-deploy \
@@ -29,6 +31,8 @@ else
   AWS_ACCESS_KEY_ID=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId)
   AWS_SECRET_ACCESS_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
   DEV_KEY=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .ApiKey)
+  DB_CONNECTION_STRING=$(echo $PARAMS | jq .Parameter.Value | jq -r . | jq .dbConnectionString)
+
   docker build \
     -f Dockerfile-test \
     --tag cloud-template-deploy \
