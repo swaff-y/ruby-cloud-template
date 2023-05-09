@@ -12,7 +12,6 @@ then
   export AWS_ACCOUNT=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsAccount)
   export AWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId)
   export AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
-  export AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
   export PROD_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .ApiKey)
   docker build \
     -f Dockerfile-test \
@@ -25,7 +24,6 @@ then
 else
   export AWS_ACCOUNT=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsAccount)
   export AWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId)
-  export AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
   export AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
   export DEV_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .ApiKey)
   docker build \
