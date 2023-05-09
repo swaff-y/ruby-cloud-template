@@ -98,10 +98,10 @@ class Config
     hash.dig('result', 'line') > 95
   end
 
-  def self.db_connection_string
-    client = Aws::SecretsManager::Client.new(region: region)
+  # def self.db_connection_string
+  #   client = Aws::SecretsManager::Client.new(region: region)
 
-    get_secret_value_response = client.get_secret_value(secret_id: 'Cloud-template-db-connection-string')
-    JSON.parse(get_secret_value_response.secret_string)['DB_CONNECTION_STRING']
-  end
+  #   get_secret_value_response = client.get_secret_value(secret_id: 'Cloud-template-db-connection-string')
+  #   JSON.parse(get_secret_value_response.secret_string)['DB_CONNECTION_STRING']
+  # end
 end
