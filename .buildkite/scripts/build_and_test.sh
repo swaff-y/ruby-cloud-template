@@ -23,9 +23,13 @@ then
     --build-arg "API_KEY=${PROD_KEY}" .
 else
   export AWS_ACCOUNT=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsAccount)
+  echo $AWS_ACCOUNT
   export AWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .awsAccessKeyId)
+  echo $AWS_ACCESS_KEY_ID
   export AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .AwsSecretAccessKey)
+  echo $AWS_SECRET_ACCESS_KEY
   export DEV_KEY=$(aws ssm get-parameter --name "cloud-temp-dev" | jq .Parameter.Value | jq -r . | jq .ApiKey)
+  echo $DEV_KEY
   docker build \
     -f Dockerfile-test \
     --tag cloud-template-deploy \
