@@ -28,16 +28,6 @@ class Config
     JSON.parse(`aws sts get-caller-identity`)['Account']
   end
 
-  def self.iam_roles
-    [
-      {
-        'Effect' => 'Allow',
-        'Action' => ['secretsmanager:GetSecretValue'],
-        'Resource' => "arn:aws:secretsmanager:#{region}:#{account}:secret:Cloud-template-db-connection-string-*"
-      }
-    ]
-  end
-
   def self.api_keys
     key = 'devKey'
     key = 'prodKey' if prod?
@@ -58,6 +48,14 @@ class Config
 
   def self.application
     'cloud_template'
+  end
+
+  def self.version
+    '0.0.1'
+  end
+
+  def self.application_description
+    'A ruby template for aws cloud intergration using a mongo db'
   end
 
   def self.application_serverless
