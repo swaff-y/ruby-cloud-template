@@ -6,6 +6,7 @@ require_relative '../controllers/status'
 require_relative '../controllers/person'
 require_relative './responses'
 require_relative './parameters'
+require_relative './security'
 require_relative './request_body'
 
 def api_status(event:, context:)
@@ -16,21 +17,9 @@ def api_status(event:, context:)
     {
       'summary' => "Check the api's status",
       'description' => "A status endpoint to check the API's status",
+      'security' => security,
       'responses' => {
-        '200' => _200({
-          'type' => 'object',
-          'properties' => {
-            'status' => {
-              'type' => 'string'
-            },
-            'database' => {
-              'type' => 'string'
-            },
-            'stage' => {
-              'type' => 'string'
-            }
-          }
-        }),
+        '200' => _200(status_response),
         '400' => _400,
         '500' => _500
       }
@@ -46,6 +35,7 @@ def get_person_by_id(event:, context:)
     {
       'summary' => 'Get a person using thier ID',
       'description' => 'This endpoint gets a persons details with thier db ID',
+      'security' => security,
       'parameters' => shared_path_parameters,
       'responses' => {
         '200' => _200(shared_data_response),
@@ -64,6 +54,7 @@ def get_person(event:, context:)
     {
       'summary' => 'Get a persons details',
       'description' => 'Get an array of persons matching filter data. i.e. weight or height. Also supports searching on firstname, lastname and fullname',
+      'security' => security,
       'parameters' => shared_request_parameters,
       'responses' => {
         '200' => _200(shared_data_response),
@@ -82,6 +73,7 @@ def post_person(event:, context:)
     {
       'summary' => 'Add a new person',
       'description' => 'Adds a new person to the database',
+      'security' => security,
       'requestBody' => body,
       'responses' => {
         '200' => _200(shared_data_response),
@@ -100,6 +92,7 @@ def put_person(event:, context:)
     {
       'summary' => 'Update a persons details',
       'description' => 'Updates persons details in the database',
+      'security' => security,
       'parameters' => shared_path_parameters,
       'requestBody' => body,
       'responses' => {
@@ -119,6 +112,7 @@ def delete_person(event:, context:)
     {
       'summary' => 'Delete a person',
       'description' => 'Deletes a person from the database',
+      'security' => security,
       'parameters' => shared_path_parameters,
       'responses' => {
         '200' => _200(shared_data_response),

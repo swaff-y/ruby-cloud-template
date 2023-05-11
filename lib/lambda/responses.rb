@@ -83,3 +83,20 @@ def shared_data_response
     }
   }
 end
+
+def status_response
+  {
+    'type' => 'object',
+    'properties' => {
+      'status' => {
+        'type' => 'string'
+      },
+      'database' => {
+        'type' => 'string'
+      },
+      'stage' => {
+        'type' => 'string'
+      }
+    }
+  }
+end
