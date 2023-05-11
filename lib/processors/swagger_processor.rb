@@ -5,8 +5,7 @@ require_relative '../tasks/swagger'
 
 module Processors
   # person model class
-  class SwaggerProcessor < Base
-
+  class SwaggerProcessor
     def initialize
       @swagger = Tasks::Swagger.new
     end
