@@ -4,12 +4,16 @@ require 'yaml'
 require_relative '../models/person'
 require_relative '../config'
 require_relative '../exceptions/exceptions'
+require_relative '../lambda/handler'
+require 'pry'
 
 module Tasks
   # Swagger constructor
   class Swagger
     attr_accessor :swagger, :swagger_yaml
+
     def initialize
+      @serverless_yml_hash = YAML.parse(File.read('serverless.yml')).to_ruby
       @swagger = {}
       version
       info
@@ -48,39 +52,31 @@ module Tasks
     end
 
     def paths
-      @swagger['paths'] = {
-        '/status/{id}' => {
-          'get' => {
-            'summary' => 'A status endpoint',
-            'parameters' => [
-              {
-                'in' => 'path',
-                'name' => 'id',
-                'description' => 'The id of the person',
-                'required' => true,
-                'schema' => {
-                  'type' => 'string',
-                }
-              }
-            ],
-            'responses' => {
-              '200' => {
-                'description' => 'Success response',
-                'content' => {
-                  'application/json' => {
-                    'schema' => {
-                      'type' => 'object',
-                      'items' => {
-                        'type' => 'string'
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
+      @swagger['paths'] = retrieve_paths
+    end
+
+    private
+
+    def retrieve_paths
+      paths = []
+      methods = []
+      @serverless_yml_hash['functions'].each do |key, value|
+        paths << value.dig('events', 0, 'http', 'path')
+        methods << {
+          'path' => value.dig('events', 0, 'http', 'path'),
+          'method' => value.dig('events', 0, 'http', 'method'),
+          'method_name' => key
         }
-      }
+      end
+      path_hash = Hash[paths.collect { |v| [v, {}] }] # rubocop: disable Style/HashConversion
+
+      methods.each do |value|
+        endpoint_details = send(value['method_name'].to_sym, event: nil, context: nil)
+        path_hash.each do |key|
+          path_hash[value['path']].store(value['method'], endpoint_details) if value['path'] == key[0]
+        end
+      end
+      path_hash
     end
   end
 end
