@@ -7,6 +7,8 @@ require_relative 'lib/tasks/coverage'
 require_relative 'lib/tasks/deploy'
 require_relative 'lib/tasks/aws_login'
 require_relative 'lib/tasks/postman'
+require_relative 'lib/tasks/swagger'
+require_relative 'lib/config'
 
 RuboCop::RakeTask.new(:rubocop) do |t|
   t.options = %w[--display-cop-names --cache false --fail-level C lib]
@@ -42,6 +44,11 @@ end
 task :postman do
   task = Tasks::Postman.new
   task.process
+end
+
+task :swagger do
+  task = Tasks::Swagger.new
+  Config.logger('info', task.swagger_yaml)
 end
 
 task default: %i[rubocop spec coverage]
