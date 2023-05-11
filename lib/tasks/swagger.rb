@@ -18,6 +18,7 @@ module Tasks
       info
       servers
       paths
+      components
       @swagger_yaml = @swagger.to_yaml
     end
 
@@ -40,11 +41,11 @@ module Tasks
           'description' => 'Server used for local development when sinatra server is running'
         },
         {
-          'url' => 'http://127.0.0.1:4567',
+          'url' => 'https://<unique_id>.execute-api.ap-southeast-2.amazonaws.com/dev-CT-XXX',
           'description' => 'Devlopment server'
         },
         {
-          'url' => 'http://127.0.0.1:4567',
+          'url' => 'https://4crc3u5fb5.execute-api.ap-southeast-2.amazonaws.com/prod',
           'description' => 'Production server'
         }
       ]
@@ -52,6 +53,18 @@ module Tasks
 
     def paths
       @swagger['paths'] = retrieve_paths
+    end
+
+    def components
+      @swagger['components'] = {
+        'securitySchemes' => {
+          'ApiKeyAuth' => {
+            'type' => 'apiKey',
+            'in' => 'header',
+            'name' => 'X-API-Key',
+          }
+        }
+      }
     end
 
     private
