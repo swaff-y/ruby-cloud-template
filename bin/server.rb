@@ -8,6 +8,11 @@ get '/status' do
   api_status(event: event, context: 'context')
 end
 
+get '/swagger' do
+  event = create_event(params, request)
+  swagger_status(event: event, context: 'context')
+end
+
 get '/person/:id' do
   event = create_event(params, request)
   get_person_by_id(event: event, context: 'context')

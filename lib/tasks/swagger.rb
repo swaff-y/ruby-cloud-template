@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'yaml'
+require 'json'
 require_relative '../models/person'
 require_relative '../config'
 require_relative '../exceptions/exceptions'
@@ -9,7 +10,7 @@ require_relative '../lambda/handler'
 module Tasks
   # Swagger constructor
   class Swagger
-    attr_accessor :swagger, :swagger_yaml
+    attr_accessor :swagger, :swagger_yaml, :swagger_json
 
     def initialize
       @serverless_yml_hash = YAML.parse(File.read('serverless.yml')).to_ruby
@@ -20,6 +21,7 @@ module Tasks
       paths
       components
       @swagger_yaml = @swagger.to_yaml
+      @swagger_json = @swagger.to_json
     end
 
     def version
