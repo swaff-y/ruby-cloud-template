@@ -5,7 +5,6 @@ require_relative '../models/person'
 require_relative '../config'
 require_relative '../exceptions/exceptions'
 require_relative '../lambda/handler'
-require 'pry'
 
 module Tasks
   # Swagger constructor
