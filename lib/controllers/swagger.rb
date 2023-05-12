@@ -19,7 +19,7 @@ module Controllers
       # Swagger processor
       swagger = @swagger_processor.process
 
-      Responses._200(swagger.swagger_json)
+      JSON.generate(swagger.swagger)
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
     end
