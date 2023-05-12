@@ -40,7 +40,7 @@ functions:
     image:
       name: cloud-template-lambda
       command:
-        - lib/lambda/handler.swagger
+        - lib/lambda/handler.swagger_status
       entryPoint:
         - '/lambda-entrypoint.sh'
     events:
