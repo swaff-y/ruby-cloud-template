@@ -20,6 +20,7 @@ module Controllers
       swagger = @swagger_processor.process
 
       return JSON.generate(swagger.swagger) if Config.local?
+
       swagger.swagger
     rescue StandardError => e
       Responses._500({ message: e.message, backtrace: e.backtrace })
