@@ -36,6 +36,18 @@ functions:
           method: get
           cors: true
           private: true
+  swagger_status:
+    image:
+      name: cloud-template-lambda
+      command:
+        - lib/lambda/handler.swagger_status
+      entryPoint:
+        - '/lambda-entrypoint.sh'
+    events:
+      - http:
+          path: /swagger
+          method: get
+          cors: true
   get_person_by_id:
     image:
       name: cloud-template-lambda

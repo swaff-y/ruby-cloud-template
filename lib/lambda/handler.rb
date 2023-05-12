@@ -4,6 +4,7 @@ require 'json'
 require_relative '../responses'
 require_relative '../controllers/status'
 require_relative '../controllers/person'
+require_relative '../controllers/swagger'
 require_relative './responses'
 require_relative './parameters'
 require_relative './security'
@@ -17,6 +18,24 @@ def api_status(event:, context:)
     {
       'summary' => "Check the api's status",
       'description' => "A status endpoint to check the API's status",
+      'security' => security,
+      'responses' => {
+        '200' => _200(status_response),
+        '400' => _400,
+        '500' => _500
+      }
+    }
+  end
+end
+
+def swagger_status(event:, context:)
+  if event
+    swagger = Controllers::Swagger.new(event, context)
+    swagger.get
+  else
+    {
+      'summary' => "Api's swagger documentation",
+      'description' => "An endpoint to get the API's swagger yaml",
       'security' => security,
       'responses' => {
         '200' => _200(status_response),

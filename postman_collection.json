@@ -62,6 +62,39 @@
 			"response": []
 		},
 		{
+			"name": "GET /swagger",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{unique_id}}.{{base}}/{{stage}}/swagger",
+					"protocol": "https",
+					"host": [
+						"{{unique_id}}",
+						"{{base}}"
+					],
+					"path": [
+						"{{stage}}",
+						"swagger"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "POST /person",
 			"event": [
 				{
