@@ -43,6 +43,17 @@ RSpec.describe Controllers::Person do
       end
     end
 
+    context 'when RecordNotCreated' do
+      before do
+        allow(validation).to receive(:validate_get_by_id).and_raise(Exceptions::RecordNotCreatedError, 'An error')
+        allow(Responses).to receive(:_400).and_return('400 not created')
+      end
+
+      it 'returns a 400 response' do
+        expect(controller.get_by_id).to eq '400 not created'
+      end
+    end
+
     context 'when ObjectId::Invalid' do
       before do
         allow(validation).to receive(:validate_get_by_id).and_raise(BSON::ObjectId::Invalid, 'An error')
