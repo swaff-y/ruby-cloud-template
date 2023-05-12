@@ -48,7 +48,6 @@ functions:
           path: /swagger
           method: get
           cors: true
-          private: true
   get_person_by_id:
     image:
       name: cloud-template-lambda
