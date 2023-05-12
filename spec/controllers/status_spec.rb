@@ -32,6 +32,17 @@ RSpec.describe Controllers::Status do
       expect(controller.get).to eq 'ok'
     end
 
+    context 'when connection error' do
+      before do
+        allow(Responses).to receive(:_200).and_raise(Exceptions::ConnectionError, 'error')
+        allow(Responses).to receive(:_500).and_return('error')
+      end
+
+      it 'returns the correct response' do
+        expect(controller.get).to eq 'error'
+      end
+    end
+
     context 'when standard error' do
       before do
         allow(Responses).to receive(:_200).and_raise(StandardError, 'error')
