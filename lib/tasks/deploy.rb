@@ -2,7 +2,6 @@
 
 require 'yaml'
 require 'json'
-require 'aws-sdk-secretsmanager'
 require_relative '../config'
 require_relative '../exceptions/exceptions'
 
