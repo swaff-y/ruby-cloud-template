@@ -37,4 +37,41 @@ RSpec.describe Models::Base do
       end
     end
   end
+
+  describe '#hash_schema' do
+    let(:hash) do
+      {
+        west: 'value'
+      }
+    end
+    let(:schema) do
+      {
+        west: 'string'
+      }
+    end
+    before do
+      allow(Validation::SchemaValidation).to receive(:validate_hash_on_schema).and_return(true)
+    end
+
+    context 'when mapped hash is not empty' do
+      it 'returns the mapped hash' do
+        model.instance_variable_set(:@model, double(:model, schema: schema))
+        expect(model.hash_schema(hash, 'post')).to eq({ :west => 'value' })
+      end
+    end
+
+    # context 'when mapped hash is empty' do
+
+    # end
+
+    # context 'when type is post' do
+    # end
+
+    # context 'when type is put' do
+
+    # end
+
+    # context 'when type is find' do
+    # end
+  end
 end

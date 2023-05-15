@@ -37,7 +37,7 @@ module Models
       end
 
       schema.each_key do |key|
-        mapped_hash[key] = hash[key.to_s] unless hash[key.to_s].nil?
+        mapped_hash[key] = hash[key] unless hash[key].nil?
       end
 
       raise Exceptions::InvalidParametersError, 'The query parameters provided are not valid' if mapped_hash.empty?
