@@ -33,11 +33,11 @@ module Validation
     end
 
     def self.nil_required?(hash, schema, key)
-      hash[key.to_s].nil? && schema.dig(key, :required)
+      hash[key].nil? && schema.dig(key, :required)
     end
 
     def self.nil_unique?(hash, schema, key)
-      hash[key.to_s] && schema.dig(key, :unique)
+      hash[key] && schema.dig(key, :unique)
     end
 
     def self.type_valid?(hash, schema, key)

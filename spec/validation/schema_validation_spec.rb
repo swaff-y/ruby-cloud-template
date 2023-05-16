@@ -106,31 +106,31 @@ RSpec.describe Validation::SchemaValidation do
     context 'when hash key is not nil' do
       it 'returns false' do
         hash[:key] = 'value'
-        expect(described_class.nil_required?(hash, schema, :key)).to be true
+        expect(described_class.nil_required?(hash, schema, :key)).to be false
       end
     end
   end
 
-  # describe '.nil_unique?' do
-  #   context 'when key of hash is not nil and schema key is not unique' do
-  #     it 'returns false' do
-  #       hash[:next_key] = 'value'
-  #       expect(described_class.nil_unique?(hash, schema, :next_key)).to be false
-  #     end
-  #   end
+  describe '.nil_unique?' do
+    context 'when key of hash is not nil and schema key is not unique' do
+      it 'returns false' do
+        hash[:next_key] = 'value'
+        expect(described_class.nil_unique?(hash, schema, :next_key)).to be false
+      end
+    end
 
-  #   context 'when key of hash is not nil and schema key is unique' do
-  #     it 'returns true' do
-  #       hash[:key] = 'value'
-  #       expect(described_class.nil_unique?(hash, schema, :key)).to be false
-  #     end
-  #   end
+    context 'when key of hash is not nil and schema key is unique' do
+      it 'returns true' do
+        hash[:key] = 'value'
+        expect(described_class.nil_unique?(hash, schema, :key)).to be true
+      end
+    end
 
-  #   context 'when hash key is nil' do
-  #     it 'returns false' do
-  #       hash[:key] = nil
-  #       expect(described_class.nil_unique?(hash, schema, :key)).to be false
-  #     end
-  #   end
-  # end
+    context 'when hash key is nil' do
+      it 'returns false' do
+        hash[:key] = nil
+        expect(described_class.nil_unique?(hash, schema, :key)).to be_nil
+      end
+    end
+  end
 end
