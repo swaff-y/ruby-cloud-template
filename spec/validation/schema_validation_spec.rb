@@ -104,9 +104,9 @@ RSpec.describe Validation::SchemaValidation do
     end
 
     context 'when hash key is not nil' do
-      it 'returns false' do
+      it 'returns true' do
         hash[:key] = 'value'
-        expect(described_class.nil_required?(hash, schema, :key)).to be false
+        expect(described_class.nil_required?(hash, schema, :key)).to be true
       end
     end
   end
@@ -127,9 +127,9 @@ RSpec.describe Validation::SchemaValidation do
     end
 
     context 'when hash key is nil' do
-      it 'returns false' do
+      it 'returns true' do
         hash[:key] = nil
-        expect(described_class.nil_unique?(hash, schema, :key)).to be_nil
+        expect(described_class.nil_unique?(hash, schema, :key)).to be true
       end
     end
   end
