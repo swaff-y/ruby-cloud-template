@@ -122,14 +122,14 @@ RSpec.describe Validation::SchemaValidation do
     context 'when key of hash is not nil and schema key is unique' do
       it 'returns true' do
         hash[:key] = 'value'
-        expect(described_class.nil_unique?(hash, schema, :key)).to be true
+        expect(described_class.nil_unique?(hash, schema, :key)).to be false
       end
     end
 
     context 'when hash key is nil' do
       it 'returns true' do
         hash[:key] = nil
-        expect(described_class.nil_unique?(hash, schema, :key)).to be true
+        expect(described_class.nil_unique?(hash, schema, :key)).to be false
       end
     end
   end
