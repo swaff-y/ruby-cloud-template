@@ -112,7 +112,7 @@ RSpec.describe Validation::SchemaValidation do
   end
 
   describe '.nil_unique?' do
-    context 'when key of hash is not nil and schema key is not unique' do
+    context 'when key of hash is not nil and schema key  is not unique' do
       it 'returns false' do
         hash[:next_key] = 'value'
         expect(described_class.nil_unique?(hash, schema, :next_key)).to be false
