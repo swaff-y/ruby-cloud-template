@@ -133,4 +133,38 @@ RSpec.describe Validation::SchemaValidation do
       end
     end
   end
+
+  describe '.type_valid?' do
+    context 'when key of hash is nil' do
+      it 'returns false' do
+        hash[:next_key] = nil
+        expect(described_class.type_valid?(hash, schema, :next_key)).to be false
+      end
+    end
+
+    context 'when key of hash is not nil and hash key is of the correct type' do
+      it 'returns true' do
+        hash[:next_key] = 'value'
+        expect(described_class.type_valid?(hash, schema, :next_key)).to be true
+      end
+    end
+  end
+
+  describe '.check_unique' do
+    context 'when record found' do
+      let(:model) { double(:model, model: double(:model_ins, collection: double(:collection, find: { test: 'object' }))) }
+
+      it 'returns correct value' do
+        expect(described_class.check_unique({}, :next_key, model, hash)).to eq 'next_key already exists'
+      end
+    end
+
+    context 'when record not found' do
+      let(:model) { double(:model, model: double(:model_ins, collection: double(:collection, find: nil))) }
+
+      it 'returns nil' do
+        expect(described_class.check_unique({}, :next, model, hash)).to be_nil
+      end
+    end
+  end
 end
