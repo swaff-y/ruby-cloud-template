@@ -46,7 +46,9 @@ class Config
   end
 
   def self.application
-    'cloud_template'
+    return 'cloud_template' if prod?
+
+    'cloud_template_dev'
   end
 
   def self.version
@@ -58,7 +60,9 @@ class Config
   end
 
   def self.application_serverless
-    'cloud-template'
+    return 'cloud-template' if prod?
+
+    'cloud-template-dev'
   end
 
   def self.local?
