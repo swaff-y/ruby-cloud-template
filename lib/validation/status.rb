@@ -13,7 +13,7 @@ module Validation
     def process
       client_name = Config&.mongo_client&.database&.name
 
-      raise Exceptions::ConnectionError, 'Could not connect to the database' unless client_name == Config.application
+      raise Exceptions::ConnectionError, "Could not connect to the database (#{client_name})" unless client_name == Config.application
 
       client_name
     end
