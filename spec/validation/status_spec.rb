@@ -33,7 +33,7 @@ RSpec.describe Validation::Status do
       end
 
       it 'raises the correct error' do
-        expect { subject.process }.to raise_error Exceptions::ConnectionError, 'Could not connect to the database'
+        expect { subject.process }.to raise_error Exceptions::ConnectionError, 'Could not connect to the database (db name)'
       end
     end
 
