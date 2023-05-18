@@ -25,6 +25,7 @@ module Controllers
     rescue Exceptions::ConnectionError => e
       Responses._500({ message: e.message, backtrace: nil })
     rescue StandardError => e
+      Config.logger('error', e.message)
       Responses._500({ message: e.message, backtrace: e.backtrace })
     end
   end
