@@ -29,7 +29,7 @@
 							"",
 							"pm.test(\"Is connecting to the correct database\",function () {",
 							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.data.database).to.eql(\"cloud_template\");",
+							"    pm.expect(jsonData.data.database).to.eql(\"$DATABASE\");",
 							"});",
 							"",
 							"pm.test(\"Has the correct stage\",function () {",
