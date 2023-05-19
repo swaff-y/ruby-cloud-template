@@ -125,12 +125,59 @@ RSpec.describe Config do
     it { expect(klass.branch_name).to eq 'branch'}
   end
 
+  describe '.region' do
+    before do
+      allow(ENV).to receive(:fetch).and_return('region')
+    end
+
+    it { expect(klass.region).to eq 'region'}
+  end
+
+  describe '.version' do
+    it { expect { klass.version }.not_to raise_error }
+  end
+
   describe '.application' do
     it { expect(klass.application).to eq 'cloud_template_dev'}
   end
 
   describe '.application_serverless' do
     it { expect(klass.application_serverless).to eq 'cloud-template'}
+  end
+
+  describe '.account' do
+    before do
+      allow(ENV).to receive(:fetch).and_return('aws account')
+    end
+    it { expect(klass.account ).to eq 'aws account'}
+
+    context 'when error' do
+      before do
+        allow(ENV).to receive(:fetch).and_raise
+        allow(JSON).to receive(:parse).and_return({ 'Account' => 'account' })
+        allow_any_instance_of(Object).to receive(:`).and_return(nil)
+      end
+
+      it { expect(klass.account).to eq 'account' }
+    end
+  end
+
+  describe '.api_keys' do
+    context 'when prod' do
+      before do
+        allow(klass).to receive(:prod?).and_return(true)
+      end
+
+      it { expect(klass.api_keys).to eq [{"name"=>"prodKey"}]}
+    end
+
+    context 'when not prod' do
+      before do
+        allow(klass).to receive(:prod?).and_return(false)
+      end
+
+      it { expect(klass.api_keys).to eq [{"name"=>"devKey"}]}
+    end
   end
 
 end
