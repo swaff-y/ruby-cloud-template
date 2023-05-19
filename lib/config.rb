@@ -30,11 +30,8 @@ class Config
   def self.api_keys
     key = 'devKey'
     key = 'prodKey' if prod?
-    [
-      {
-        'name' => key
-      }
-    ]
+
+    [{ 'name' => key }]
   end
 
   def self.branch_name
