@@ -137,6 +137,10 @@ RSpec.describe Config do
     it { expect { klass.version }.not_to raise_error }
   end
 
+  describe '.application_description' do
+    it { expect { klass.application_description }.not_to raise_error }
+  end
+
   describe '.application' do
     it { expect(klass.application).to eq 'cloud_template_dev'}
   end
