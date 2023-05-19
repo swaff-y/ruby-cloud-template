@@ -130,7 +130,7 @@ RSpec.describe Config do
   end
 
   describe '.application_serverless' do
-    it { expect(klass.application_serverless).to eq 'cloud-template-dev'}
+    it { expect(klass.application_serverless).to eq 'cloud-template'}
   end
 
 end
