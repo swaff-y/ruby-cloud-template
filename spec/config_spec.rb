@@ -184,4 +184,64 @@ RSpec.describe Config do
     end
   end
 
+  describe '.correct_coverage?' do
+    context 'when greater than 80' do
+      let(:hash) do
+        {
+          'result' => {
+            'line' => 81
+          }
+        }
+      end
+
+      it 'returns false' do
+        expect(klass.correct_coverage?(hash)).to be false
+      end
+    end
+    
+    context 'when less than than 80' do
+      let(:hash) do
+        {
+          'result' => {
+            'line' => 79
+          }
+        }
+      end
+
+      it 'returns true' do
+        expect(klass.correct_coverage?(hash)).to be true
+      end
+    end
+  end
+
+  describe '.best_coverage?' do
+    context 'when greater than 95' do
+      let(:hash) do
+        {
+          'result' => {
+            'line' => 96
+          }
+        }
+      end
+
+      it 'returns true' do
+        expect(klass.best_coverage?(hash)).to be true
+      end
+    end
+
+    context 'when less than than 95' do
+      let(:hash) do
+        {
+          'result' => {
+            'line' => 94
+          }
+        }
+      end
+
+      it 'returns false' do
+        expect(klass.best_coverage?(hash)).to be false
+      end
+    end
+  end
+
 end
