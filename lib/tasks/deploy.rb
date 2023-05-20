@@ -82,7 +82,7 @@ module Tasks
         event_exec[index] = changed_row if row.match(/\$DATABASE/)
       end
 
-      puts "Zebra: #{event_exec}"
+      event_exec
     end
   end
 end
