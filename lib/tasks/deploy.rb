@@ -12,6 +12,7 @@ module Tasks
       @serverless_yml_hash = YAML.parse(File.read('serverless.yml')).to_ruby
       @postman_json_hash = JSON.parse(File.read('postman_collection.json'))
     rescue StandardError => e
+      puts 'batman'
       Config.logger('error', "deploy #{e.message}")
       exit(1)
     end
