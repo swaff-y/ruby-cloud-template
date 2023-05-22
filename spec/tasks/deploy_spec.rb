@@ -194,6 +194,10 @@ RSpec.describe Tasks::Deploy do
     end
 
     context 'when auth.apikey' do
+      before do
+        allow(ENV).to receive(:fetch).and_return('F@K3k3Y')
+      end
+
       it 'adds the correct value to the key' do
         deploy.instance_variable_set(:@postman_json_hash, postman_json)
         deploy.process_postman
@@ -205,6 +209,7 @@ RSpec.describe Tasks::Deploy do
     context 'when prod' do
       before do
         allow(Config).to receive(:prod?).and_return(true)
+        allow(ENV).to receive(:fetch).and_return('F@K3k3Y')
       end
 
       it 'sets the correct value' do
@@ -219,6 +224,7 @@ RSpec.describe Tasks::Deploy do
       before do
         allow(Config).to receive(:prod?).and_return(false)
         allow(Config).to receive(:branch_name).and_return('branch-name')
+        allow(ENV).to receive(:fetch).and_return('F@K3k3Y')
       end
 
       it 'sets the correct value' do
@@ -233,6 +239,7 @@ RSpec.describe Tasks::Deploy do
       before do
         allow(Config).to receive(:prod?).and_return(false)
         allow(Config).to receive(:branch_name).and_return('branch-name')
+        allow(ENV).to receive(:fetch).and_return('F@K3k3Y')
       end
 
       it 'sets the correct value' do
