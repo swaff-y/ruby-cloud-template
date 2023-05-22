@@ -156,4 +156,139 @@ RSpec.describe Tasks::Deploy do
       end
     end
   end
+
+  describe '.process_postman' do
+    let(:postman_json) do
+      {
+        'auth' => {
+          'apikey' => [
+            'key' => 'value'
+          ]
+        },
+        'variable' => [
+          'key' => 'stage'
+        ],
+        'item' => [
+          {
+            'name' => 'GET /status',
+            'west' => 'wvalue'
+          }
+        ]
+      }
+    end
+
+    before do
+      allow(File).to receive(:write).and_return('written file')
+      allow_any_instance_of(klass).to receive(:process_status_endpoint).and_return('processed')
+    end
+
+    context 'when key nil' do
+      before do
+        allow(ENV).to receive(:fetch).and_return(nil)
+      end
+
+      it 'raises the correct error' do
+        deploy.instance_variable_set(:@postman_json_hash, nil)
+        expect {deploy.process_postman}.to raise_error StandardError, 'No api key variables set'
+      end
+    end
+
+    context 'when auth.apikey' do
+      it 'adds the correct value to the key' do
+        deploy.instance_variable_set(:@postman_json_hash, postman_json)
+        deploy.process_postman
+        postman_hash = deploy.instance_variable_get(:@postman_json_hash)
+        expect(postman_hash['auth']['apikey'][0]['value']).to eq 'F@K3k3Y'   
+      end
+    end
+
+    context 'when prod' do
+      before do
+        allow(Config).to receive(:prod?).and_return(true)
+      end
+
+      it 'sets the correct value' do
+        deploy.instance_variable_set(:@postman_json_hash, postman_json)
+        deploy.process_postman
+        postman_hash = deploy.instance_variable_get(:@postman_json_hash)
+        expect(postman_hash['variable'][0]['value']).to eq 'prod' 
+      end
+    end
+
+    context 'when not prod' do
+      before do
+        allow(Config).to receive(:prod?).and_return(false)
+        allow(Config).to receive(:branch_name).and_return('branch-name')
+      end
+
+      it 'sets the correct value' do
+        deploy.instance_variable_set(:@postman_json_hash, postman_json)
+        deploy.process_postman
+        postman_hash = deploy.instance_variable_get(:@postman_json_hash)
+        expect(postman_hash['variable'][0]['value']).to eq 'dev-branch-name' 
+      end
+    end
+
+    context 'when status endpoint' do
+      before do
+        allow(Config).to receive(:prod?).and_return(false)
+        allow(Config).to receive(:branch_name).and_return('branch-name')
+      end
+
+      it 'sets the correct value' do
+        deploy.instance_variable_set(:@postman_json_hash, postman_json)
+        deploy.process_postman
+        postman_hash = deploy.instance_variable_get(:@postman_json_hash)
+        expect(postman_hash['item'][0]['west']).to eq 'wvalue' 
+      end
+    end
+  end
+
+  describe '.process_unique_id' do
+    let(:postman_json) do
+      {
+        'variable' => [
+          'key' => 'unique_id',
+          'value' => ''
+        ]
+      }
+    end
+    
+    before do
+      allow(File).to receive(:write).and_return('written file')
+      allow(ENV).to receive(:fetch).and_return('unique id')
+    end 
+
+    it 'sets the correct value' do
+      deploy.instance_variable_set(:@postman_json_hash, postman_json)
+      deploy.process_unique_id
+      postman_hash = deploy.instance_variable_get(:@postman_json_hash)
+      expect(postman_hash['variable'][0]['value']).to eq 'unique id' 
+    end
+  end
+
+  describe '.process_status_endpoint' do
+    let(:status_endpoint) do
+      {
+        'event' => [{
+          'script' => {
+            'exec' => [
+              '$DATABASE'
+            ]
+          }
+        }]
+      }
+    end
+
+    before do
+      allow(File).to receive(:write).and_return('written file')
+      allow(ENV).to receive(:fetch).and_return('unique id')
+      allow(Config).to receive(:application).and_return('an application')
+    end 
+
+    it 'sets the correct value' do
+      deploy.instance_variable_set(:@status_endpoint, status_endpoint)
+      expect(deploy.process_status_endpoint).to eq(["an application"])
+    end
+  end
 end
