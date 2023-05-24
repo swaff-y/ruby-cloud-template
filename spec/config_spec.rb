@@ -194,8 +194,8 @@ RSpec.describe Config do
         }
       end
 
-      it 'returns false' do
-        expect(klass.correct_coverage?(hash)).to be false
+      it 'returns true' do
+        expect(klass.correct_coverage?(hash)).to be true
       end
     end
     
@@ -208,8 +208,8 @@ RSpec.describe Config do
         }
       end
 
-      it 'returns true' do
-        expect(klass.correct_coverage?(hash)).to be true
+      it 'returns false' do
+        expect(klass.correct_coverage?(hash)).to be false
       end
     end
   end

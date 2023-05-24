@@ -16,7 +16,7 @@ module Tasks
     end
 
     def process
-      raise Exceptions::CoverageError, @error_msg if Config.correct_coverage?(@cov_hash)
+      raise Exceptions::CoverageError, @error_msg unless Config.correct_coverage?(@cov_hash)
 
       return Config.logger('info', "Code coverage: #{@best_msg}") if Config.best_coverage?(@cov_hash)
 
