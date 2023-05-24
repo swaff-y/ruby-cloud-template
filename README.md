@@ -2,12 +2,37 @@
 
 # ruby-cloud-template
 
-## Mongo DB batabases
-### Dev database
-### Prod databse
+## Stack Overview
+- Ruby
+- AWS Lambda
+- AWS API Gateway
+- AWS Cloudfront
+- AWS Cloudwatch
+- MongoDb
+- Sinatra
+- Docker
+- Github
+- Serverless
+
+## File structure
+
+## Running locally
+
+## Build actions
+
+## Mongo DB databases
+- Dev database
+- Prod databse
 
 ## Buildkite
+### Description
 - create pipline
 - start agent
 - buildkite-agent start
 - Push build
+
+### Steps to setup buildkite
+
+## AWS
+### Description
+### Setup
