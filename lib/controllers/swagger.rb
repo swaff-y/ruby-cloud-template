@@ -13,10 +13,10 @@ module Controllers
       @event = event
       @context = context
       @swagger_processor = Processors::SwaggerProcessor.new
-      @start = Time.now
     end
 
     def get
+      @start = Time.now
       # Swagger processor
       swagger = @swagger_processor.process
 
