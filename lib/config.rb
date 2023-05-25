@@ -49,7 +49,7 @@ class Config
   end
 
   def self.version
-    '0.0.19'
+    '0.1.0'
   end
 
   def self.application_description
