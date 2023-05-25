@@ -59,7 +59,7 @@ RSpec.describe Tasks::Swagger do
 
     it 'adds the version to the swagger document' do
       expect(swagger.info).to include('description', 'title')
-      expect(swagger.swagger).to include('description', 'title')
+      expect(swagger.swagger['info']).to include('description', 'title')
     end
   end
 
