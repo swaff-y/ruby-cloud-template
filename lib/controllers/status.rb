@@ -23,8 +23,10 @@ module Controllers
 
       Responses._200({ status: 'Ok', database: db_name, stage: Config.stage })
     rescue Exceptions::ConnectionError => e
-      Responses._500({ message: e.message, backtrace: nil })
+      Config.logger('error', e.message)
+      Responses._500({ message: "Connection Error: #{e.message}", backtrace: e.backtrace })
     rescue StandardError => e
+      Config.logger('error', e.message)
       Responses._500({ message: e.message, backtrace: e.backtrace })
     end
   end

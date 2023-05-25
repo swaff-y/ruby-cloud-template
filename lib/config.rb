@@ -30,11 +30,8 @@ class Config
   def self.api_keys
     key = 'devKey'
     key = 'prodKey' if prod?
-    [
-      {
-        'name' => key
-      }
-    ]
+
+    [{ 'name' => key }]
   end
 
   def self.branch_name
@@ -46,11 +43,13 @@ class Config
   end
 
   def self.application
-    'cloud_template'
+    return 'cloud_template' if prod?
+
+    'cloud_template_dev'
   end
 
   def self.version
-    '0.0.1'
+    '0.0.19'
   end
 
   def self.application_description
@@ -88,7 +87,7 @@ class Config
   end
 
   def self.correct_coverage?(hash)
-    hash.dig('result', 'line') < 80
+    hash.dig('result', 'line') > 80
   end
 
   def self.best_coverage?(hash)

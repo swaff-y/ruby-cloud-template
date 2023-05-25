@@ -30,7 +30,6 @@ module Tasks
       end
 
       Config.logger('info', 'Postman passed')
-      exit(0)
     rescue Exceptions::PostmanError => e
       Config.logger('error', "Postman #{e.message}")
       exit(1)

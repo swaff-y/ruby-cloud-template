@@ -12,6 +12,7 @@ module Tasks
       @serverless_yml_hash = YAML.parse(File.read('serverless.yml')).to_ruby
       @postman_json_hash = JSON.parse(File.read('postman_collection.json'))
     rescue StandardError => e
+      puts 'batman'
       Config.logger('error', "deploy #{e.message}")
       exit(1)
     end
@@ -51,6 +52,12 @@ module Tasks
         val['value'] = Config.prod? ? 'prod' : "dev-#{Config.branch_name}" if val['key'] == 'stage'
       end
 
+      @status_endpoint = @postman_json_hash['item'].find do |item|
+        item['name'] == 'GET /status'
+      end
+
+      process_status_endpoint
+
       File.write('postman_collection.json', @postman_json_hash.to_json)
     end
 
@@ -60,6 +67,23 @@ module Tasks
       end
 
       File.write('postman_collection.json', @postman_json_hash.to_json)
+    end
+
+    def process_status_endpoint
+      event = @status_endpoint['event'][0]
+      event_exec = event['script']['exec']
+
+      row_to_change = event_exec.find do |row|
+        row.match(/\$DATABASE/)
+      end
+
+      changed_row = row_to_change.gsub(/\$DATABASE/, Config.application)
+
+      event_exec.each_with_index do |row, index|
+        event_exec[index] = changed_row if row.match(/\$DATABASE/)
+      end
+
+      event_exec
     end
   end
 end

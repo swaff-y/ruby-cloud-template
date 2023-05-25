@@ -125,12 +125,123 @@ RSpec.describe Config do
     it { expect(klass.branch_name).to eq 'branch'}
   end
 
+  describe '.region' do
+    before do
+      allow(ENV).to receive(:fetch).and_return('region')
+    end
+
+    it { expect(klass.region).to eq 'region'}
+  end
+
+  describe '.version' do
+    it { expect { klass.version }.not_to raise_error }
+  end
+
+  describe '.application_description' do
+    it { expect { klass.application_description }.not_to raise_error }
+  end
+
   describe '.application' do
-    it { expect(klass.application).to eq 'cloud_template'}
+    it { expect(klass.application).to eq 'cloud_template_dev'}
   end
 
   describe '.application_serverless' do
     it { expect(klass.application_serverless).to eq 'cloud-template'}
+  end
+
+  describe '.account' do
+    before do
+      allow(ENV).to receive(:fetch).and_return('aws account')
+    end
+    it { expect(klass.account ).to eq 'aws account'}
+
+    context 'when error' do
+      before do
+        allow(ENV).to receive(:fetch).and_raise
+        allow(JSON).to receive(:parse).and_return({ 'Account' => 'account' })
+        allow_any_instance_of(Object).to receive(:`).and_return(nil)
+      end
+
+      it { expect(klass.account).to eq 'account' }
+    end
+  end
+
+  describe '.api_keys' do
+    context 'when prod' do
+      before do
+        allow(klass).to receive(:prod?).and_return(true)
+      end
+
+      it { expect(klass.api_keys).to eq [{"name"=>"prodKey"}]}
+    end
+
+    context 'when not prod' do
+      before do
+        allow(klass).to receive(:prod?).and_return(false)
+      end
+
+      it { expect(klass.api_keys).to eq [{"name"=>"devKey"}]}
+    end
+  end
+
+  describe '.correct_coverage?' do
+    context 'when greater than 80' do
+      let(:hash) do
+        {
+          'result' => {
+            'line' => 81
+          }
+        }
+      end
+
+      it 'returns true' do
+        expect(klass.correct_coverage?(hash)).to be true
+      end
+    end
+    
+    context 'when less than than 80' do
+      let(:hash) do
+        {
+          'result' => {
+            'line' => 79
+          }
+        }
+      end
+
+      it 'returns false' do
+        expect(klass.correct_coverage?(hash)).to be false
+      end
+    end
+  end
+
+  describe '.best_coverage?' do
+    context 'when greater than 95' do
+      let(:hash) do
+        {
+          'result' => {
+            'line' => 96
+          }
+        }
+      end
+
+      it 'returns true' do
+        expect(klass.best_coverage?(hash)).to be true
+      end
+    end
+
+    context 'when less than than 95' do
+      let(:hash) do
+        {
+          'result' => {
+            'line' => 94
+          }
+        }
+      end
+
+      it 'returns false' do
+        expect(klass.best_coverage?(hash)).to be false
+      end
+    end
   end
 
 end
