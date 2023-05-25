@@ -205,12 +205,6 @@ The file structure provided above gives an overview of the organization and comp
 - Prod databse
 
 ## Buildkite
-### Description
-- create pipline
-- start agent
-- buildkite-agent start
-- Push build
-
 ### Setting Up a Buildkite Pipeline
 
 To set up a Buildkite pipeline, follow these steps:
