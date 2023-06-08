@@ -33,12 +33,14 @@ steps:
 
   - wait: ~
     continue_on_failure: true
+    branches: "!main"
 
-  - block: ':hammer: Remove Stack'
+  - block: ':bomb: Remove Stack'
+    branches: "!main"
 
-  - name: ':package: Removing stack'
+  - name: ':gun: Removing stack'
+    branches: "!main"
     commands:
       - 'sh .buildkite/scripts/remove.sh'
-
     agents:
       queue: default
