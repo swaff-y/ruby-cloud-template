@@ -45,17 +45,17 @@ else
     --build-arg "API_KEY=${DEV_KEY}" .
 fi
 
-docker run \
+docker run --rm \
   cloud-template-deploy bundle exec rake
 
 if [ "$BUILDKITE_BRANCH" == "main"  ]
 then
-  docker run \
+  docker run --rm \
     --mount type=bind,source=/Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml,target=/app/serverless.yml \
     --mount type=bind,source=/Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/postman_collection.json,target=/app/postman_collection.json \
     cloud-template-deploy bundle exec rake deploy_prod
 else
-  docker run \
+  docker run --rm \
     --mount type=bind,source=/Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/serverless.yml,target=/app/serverless.yml \
     --mount type=bind,source=/Users/kyleswaffield/docker/${BUILDKITE_PIPELINE_NAME}/${BUILDKITE_BRANCH}/postman_collection.json,target=/app/postman_collection.json \
     cloud-template-deploy bundle exec rake deploy_dev
