@@ -3,39 +3,104 @@
 require 'sinatra'
 require_relative '../lib/lambda/handler'
 
-get '/status' do
-  event = create_event(params, request)
-  api_status(event: event, context: 'context')
+get /.*/ do
+  request_path = request.path_info
+  pwd = File.dirname(__FILE__).gsub(/\/bin/, "")
+  sls = YAML.load_file("#{pwd}/serverless.yml")
+  functions = sls['functions'].keys
+  functions.each do |key|
+    func = sls.dig('functions', key)
+    path = func&.dig('events', 0, 'http', 'path')
+    match = match_path(path, request_path)
+      
+    if match
+      params.merge!(match)
+      event = create_event(params, request)
+      return send(key.to_sym, { event: event, context: 'context' })
+    end
+  end
+  JSON.generate({ error: 'route does not exist' })
 end
 
-get '/swagger' do
-  event = create_event(params, request)
-  swagger_status(event: event, context: 'context')
+post /.*/ do
+  request_path = request.path_info
+  pwd = File.dirname(__FILE__).gsub(/\/bin/, "")
+  sls = YAML.load_file("#{pwd}/serverless.yml")
+  functions = sls['functions'].keys
+  functions.each do |key|
+    func = sls.dig('functions', key)
+    path = func&.dig('events', 0, 'http', 'path')
+    match = match_path(path, request_path)
+      
+    if match
+      params.merge!(match)
+      event = create_event(params, request)
+      return send(key.to_sym, { event: event, context: 'context' })
+    end
+  end
+  JSON.generate({ error: 'route does not exist' })
 end
 
-get '/person/:id' do
-  event = create_event(params, request)
-  get_person_by_id(event: event, context: 'context')
+put /.*/ do
+  request_path = request.path_info
+  pwd = File.dirname(__FILE__).gsub(/\/bin/, "")
+  sls = YAML.load_file("#{pwd}/serverless.yml")
+  functions = sls['functions'].keys
+  functions.each do |key|
+    func = sls.dig('functions', key)
+    path = func&.dig('events', 0, 'http', 'path')
+    match = match_path(path, request_path)
+      
+    if match
+      params.merge!(match)
+      event = create_event(params, request)
+      return send(key.to_sym, { event: event, context: 'context' })
+    end
+  end
+  JSON.generate({ error: 'route does not exist' })
 end
 
-get '/person' do
-  event = create_event(params, request)
-  get_person(event: event, context: 'context')
+delete /.*/ do
+  request_path = request.path_info
+  pwd = File.dirname(__FILE__).gsub(/\/bin/, "")
+  sls = YAML.load_file("#{pwd}/serverless.yml")
+  functions = sls['functions'].keys
+  functions.each do |key|
+    func = sls.dig('functions', key)
+    path = func&.dig('events', 0, 'http', 'path')
+    match = match_path(path, request_path)
+      
+    if match
+      params.merge!(match)
+      event = create_event(params, request)
+      return send(key.to_sym, { event: event, context: 'context' })
+    end
+  end
+  JSON.generate({ error: 'route does not exist' })
 end
 
-post '/person' do
-  event = create_event(params, request)
-  post_person(event: event, context: 'context')
-end
+def match_path(path, requested_path)
+  return false if path.nil?
 
-put '/person/:id' do
-  event = create_event(params, request)
-  put_person(event: event, context: 'context')
-end
+  return false if requested_path.nil?
 
-delete '/person/:id' do
-  event = create_event(params, request)
-  delete_person(event: event, context: 'context')
+  path_arr = path.split("/")
+  requested_path_arr = requested_path.split("/")
+  params = {}
+
+  if path_arr.length == requested_path_arr.length
+    path_arr.each_with_index do |value, index|
+      if value.match(/{.*}/)
+        params[value.gsub(/{/, '').gsub(/}/, '').to_sym] = requested_path_arr[index]
+      elsif value != requested_path_arr[index]
+        return false
+      end
+    end
+  else
+    return false
+  end
+
+  params
 end
 
 def create_event(params, request)
