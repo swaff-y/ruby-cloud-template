@@ -234,3 +234,6 @@ By following these steps, you'll be able to set up a Buildkite pipeline to autom
 ## AWS
 ### Description
 ### Setup
+
+[changelog-link]: ./CHANGELOG.md
+[changelog-badge]: https://img.shields.io/badge/changelog%20version-0.1.1-blue.svg
