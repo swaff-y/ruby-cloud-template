@@ -18,8 +18,6 @@ gem 'rubocop-rspec'
 gem 'simplecov'
 
 group :development, :test do
-  gem 'debase'
-  gem 'ruby-debug-ide'
   gem 'pry'
   gem 'sinatra'
   gem 'puma'
