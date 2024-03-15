@@ -7,7 +7,7 @@ provider:
     images:
       cloud-template-lambda:
         path: ./
-  runtime: ruby2.7
+  runtime: ruby3.2
   profile: default
   stage: $STAGE
   region: $REGION
